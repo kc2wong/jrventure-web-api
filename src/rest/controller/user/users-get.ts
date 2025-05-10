@@ -9,12 +9,12 @@ import { dto2Entity as statusDto2Entity } from '../../../mapper/user-status-mapp
 import { entity2Dto } from '../../../mapper/user-mapper';
 
 import { findUser as findUserRepo } from '../../../repo/user-repo';
-import { findStudent as findStudentRepo } from '../../../repo/student-repo';
 import { asArray } from '../../../util/array-util';
 import { getStudents } from './user-enrichment';
 
 const systemUser: SimpleUserDto = {
   id: '1',
+  email: 'xxx@abc.com',
   name: { English: 'Administrator' },
 };
 
@@ -30,14 +30,13 @@ export const findUser = async (
     const role = asArray(req.query?.role);
     const status = asArray(req.query?.status);
 
-    const result = await findUserRepo(
-      undefined,
+    const result = await findUserRepo({
       email,
       name,
       studentId,
-      role ? role.map((r) => roleDto2Entity(r)) : undefined,
-      status ? status.map((s) => statusDto2Entity(s)) : undefined
-    );
+      role: role ? role.map((r) => roleDto2Entity(r)) : undefined,
+      status: status ? status.map((s) => statusDto2Entity(s)) : undefined,
+    });
 
     const studentMap = await getStudents(result);
 

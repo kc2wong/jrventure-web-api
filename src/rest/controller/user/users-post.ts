@@ -13,6 +13,7 @@ import { getStudents } from './user-enrichment';
 
 const systemUser: SimpleUserDto = {
   id: '1',
+  email: 'xxx@abc.com',
   name: { English: 'Administrator' },
 };
 

@@ -7,14 +7,23 @@ import {
   UserStatus,
 } from '../__generated__/linkedup-backend-client';
 
-export const findUser = async (
-  id?: number[],
-  email?: string,
-  name?: string,
-  studentId?: string,
-  role?: UserRole[],
-  status?: UserStatus[]
-): Promise<User[]> => {
+interface FindUserParams {
+  id?: number[];
+  email?: string;
+  name?: string;
+  studentId?: string;
+  role?: UserRole[];
+  status?: UserStatus[];
+}
+
+export const findUser = async ({
+  id,
+  email,
+  name,
+  studentId,
+  role,
+  status,
+}: FindUserParams): Promise<User[]> => {
   try {
     const u = await backendApiClient.userMaintenance.findUser(
       id?.map((i) => i.toString()),

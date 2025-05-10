@@ -12,6 +12,7 @@ import { entity2Dto } from '../../../mapper/user-mapper';
 
 const systemUser: SimpleUserDto = {
   id: '1',
+  email: 'xxx@abc.com',
   name: { English: 'Administrator' },
 };
 
@@ -32,17 +33,12 @@ export const getUserById = async (
       throw notFoundErrorDto;
     }
 
-    const users = await findUser([id]);
+    const users = await findUser({ id: [id] });
     if (users.length != 1) {
       throw notFoundErrorDto;
     }
 
-    const userDto = entity2Dto(
-      users[0],
-      [],
-      systemUser,
-      systemUser
-    );
+    const userDto = entity2Dto(users[0], [], systemUser, systemUser);
     res.status(200).json(userDto);
   } catch (error: any) {
     next(error);

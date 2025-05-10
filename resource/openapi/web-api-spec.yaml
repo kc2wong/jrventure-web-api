@@ -352,18 +352,19 @@ paths:
                 required:
                   - token
                   - menu
-                  - entitledStudents                  
+                  - parentUser                  
                 properties:
                   token:
                     type: string
                     description: JWT token
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                  entitledStudents:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Student"
                   menu:
                     $ref: "#/components/schemas/MenuItem"
+                  parentUser:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SimpleUser"
+                    description: Parent users if this user is a student
         '401':
           description: Unauthorized - Invalid userId or password
           content:
@@ -396,13 +397,21 @@ paths:
               schema:
                 type: object
                 required:
-                  - user
+                  - token
                   - menu
+                  - parentUser
                 properties:
-                  user:
-                    $ref: "#/components/schemas/User"
+                  token:
+                    type: string
+                    description: JWT token
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                   menu:
                     $ref: "#/components/schemas/MenuItem"
+                  parentUser:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SimpleUser"
+                    description: Parent users if this user is a student
         '401':
           description: Unauthorized - Invalid user
           content:
@@ -436,6 +445,9 @@ components:
       - English
       - TraditionalChinese
       - SimplifiedChinese
+    MultiLingual:
+      type: object
+      additionalProperties: true
     UserRole:
       type: string
       enum:
@@ -541,10 +553,14 @@ components:
       type: object
       required:
         - id
+        - email
         - name
       properties:
         id:
           type: string
+        email:
+          type: string
+          format: email
         name:
           type: object
           additionalProperties: true
@@ -616,6 +632,7 @@ components:
       type: object
       required:
         - id
+        - sellerId
         - seller        
         - sellerClass        
         - name        
@@ -626,6 +643,8 @@ components:
         - likes        
       properties:
         id:
+          type: string
+        sellerId:
           type: string
         seller:
           type: string
@@ -688,3 +707,39 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ProductApprovalComment"
+    Shop:
+      type: object
+      required:
+        - student
+        - description
+        - approvedProducts        
+        - pendingProducts        
+        - rejectedProducts        
+      properties:
+        description:
+          $ref: "#/components/schemas/MultiLingual"
+        imageUrl:
+          type: string
+        student:
+          $ref: "#/components/schemas/Student"
+        approvedProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        pendingProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductApproval"
+        rejectedProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductApproval"
+    MarketPlace:
+      type: object
+      required:
+        - products
+      properties:
+        products:
+          type: array
+          items:
+          $ref: "#/components/schemas/Product"
