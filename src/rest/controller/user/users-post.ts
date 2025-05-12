@@ -5,11 +5,16 @@ import {
   UsersPostRequestDto,
 } from '../../dto-schema';
 
-import { createUser as createUserRepo } from '../../../repo/user-repo';
+import {
+  createUser as createUserRepo,
+  updateUser as updatedUserRepo,
+  findUser as findUserRepo,
+} from '../../../repo/user-repo';
 import { entity2Dto } from '../../../mapper/user-mapper';
 import { dto2Entity as userRoleDto2Entity } from '../../../mapper/user-role-mapper';
 import { dto2Entity as userStatusDto2Entity } from '../../../mapper/user-status-mapper';
 import { getStudents } from './user-enrichment';
+import { User, UserRole } from '../../../__generated__/linkedup-backend-client';
 
 const systemUser: SimpleUserDto = {
   id: '1',
@@ -22,15 +27,38 @@ export const createUser = async (
   res: Response<UsersPost201ResponseDto>,
   next: NextFunction
 ) => {
+
   try {
     const { email, name, role, status, entitledStudentId } = req.body;
-    const newUser = await createUserRepo({
-      email,
-      name,
-      role: userRoleDto2Entity(role),
-      status: userStatusDto2Entity(status),
-      entitledStudentId: entitledStudentId ?? [],
-    });
+
+    let existingParent: User | undefined;
+    if (role === UserRole.PARENT) {
+      existingParent = (
+        await findUserRepo({
+          email,
+          role: [userRoleDto2Entity(UserRole.PARENT)],
+        })
+      )[0];
+    }
+
+    const newUser = existingParent
+      ? await updatedUserRepo(existingParent.id, existingParent.version, {
+          email,
+          name,
+          role: userRoleDto2Entity(role),
+          status: userStatusDto2Entity(status),
+          entitledStudentId: [
+            ...existingParent.entitledStudentId,
+            ...entitledStudentId,
+          ],
+        })
+      : await createUserRepo({
+          email,
+          name,
+          role: userRoleDto2Entity(role),
+          status: userStatusDto2Entity(status),
+          entitledStudentId: entitledStudentId ?? [],
+        });
 
     const studentMap = await getStudents([newUser]);
 

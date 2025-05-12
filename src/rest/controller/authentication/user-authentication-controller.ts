@@ -26,6 +26,12 @@ export const userAuthenticationPost = async (
             .filter((u) => u.role === UserRole.PARENT)
             .map(({ id, email, name }) => ({ id, email, name }))
         : [];
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json(
       result.status === AuthenticationStatus.SUCCESS
