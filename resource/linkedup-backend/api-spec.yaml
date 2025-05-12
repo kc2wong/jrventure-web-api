@@ -5,8 +5,6 @@ info:
   version: 1.0.0
 
 tags: 
-  - name: User Registration
-    description: New user registration
   - name: User Maintenance
     description: User Maintenance
   - name: User Authentication
@@ -315,6 +313,7 @@ components:
       - Parent
       - Teacher
       - Admin
+      - Alumni
     UserStatus:
       type: string
       enum:
