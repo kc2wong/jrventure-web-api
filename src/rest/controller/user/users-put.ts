@@ -5,6 +5,7 @@ import {
   UsersPutRequestBodyDto,
   UsersPut200ResponseDto,
 } from '../../dto-schema';
+
 import { updateUser as updateUserRepo } from '../../../repo/user-repo';
 import { entity2Dto } from '../../../mapper/user-mapper';
 import { dto2Entity as userRoleDto2Entity } from '../../../mapper/user-role-mapper';
@@ -23,29 +24,18 @@ export const updateUser = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
     const { email, name, role, status, entitledStudentId, version } = req.body;
-    const updatedUser = await updateUserRepo(
-      req.params.id,
-      version,
-      {
-        email,
-        name,
-        role: userRoleDto2Entity(role),
-        status: userStatusDto2Entity(status),
-        entitledStudentId: entitledStudentId ?? [],
-      },
-      jwt
-    );
+    const updatedUser = await updateUserRepo(req.params.id, version, {
+      email,
+      name,
+      role: userRoleDto2Entity(role),
+      status: userStatusDto2Entity(status),
+      entitledStudentId: entitledStudentId ?? [],
+    });
 
-    const studentMap = await getStudents([updatedUser], jwt);
+    const studentMap = await getStudents([updatedUser]);
 
-    const userDto = entity2Dto(
-      updatedUser,
-      Array.from(studentMap.values()),
-      systemUser,
-      systemUser
-    );
+    const userDto = entity2Dto(updatedUser, Array.from(studentMap.values()), systemUser, systemUser);
     res.status(200).json(userDto);
   } catch (error: any) {
     next(error);

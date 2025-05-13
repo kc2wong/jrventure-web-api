@@ -4,6 +4,10 @@ import {
   GoogleAuthenticationPost200ResponseDto,
   SimpleUserDto,
 } from '../../dto-schema';
+import {
+  AuthenticationStatus,
+  UserRole,
+} from '../../../__generated__/linkedup-backend-client';
 import { googleAuthenticate } from '../../../repo/user-authentication-repo';
 import { generateAuthResponse } from './base-authentication-controller';
 import { findUser as findUserRepo } from '../../../repo/user-repo';
@@ -14,22 +18,14 @@ export const googleAuthenticationPost = async (
   next: NextFunction
 ) => {
   try {
-    const client = res.locals.client;
     const result = await googleAuthenticate(req.body.accessToken);
 
-    if (result.status === 'Success') {
+    if (result.status === AuthenticationStatus.SUCCESS) {
       const { token, menu } = await generateAuthResponse(result.user);
       const parentUser: SimpleUserDto[] =
-        result.user.role === 'Student'
-          ? (
-              await findUserRepo(
-                {
-                  studentId: result.user.entitledStudentId[0],
-                },
-                client
-              )
-            )
-              .filter((u) => u.role === 'Parent')
+        result.user.role === UserRole.STUDENT
+          ? (await findUserRepo({ studentId: result.user.entitledStudentId[0] }))
+              .filter((u) => u.role === UserRole.PARENT)
               .map(({ id, email, name }) => ({ id, email, name }))
           : [];
       res.cookie('jwt', token, {
