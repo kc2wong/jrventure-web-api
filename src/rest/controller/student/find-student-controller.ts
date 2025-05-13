@@ -16,6 +16,7 @@ export const findStudent = async (
   next: NextFunction
 ) => {
   try {
+    const jwt = req.cookies.jwt;
     const ids = asArray(req.query?.id);
     const classIdStudentNumber = req.query?.classIdStudentNumber;
     const classId = classIdStudentNumber
@@ -26,7 +27,7 @@ export const findStudent = async (
       : undefined;
     const name = req.query?.name;
     const matchedStudents = (
-      await findStudentEntity(ids, classId, name)
+      await findStudentEntity(ids, classId, name, jwt)
     ).filter(
       (s) => studentNumber === undefined || s.studentNumber === studentNumber
     );

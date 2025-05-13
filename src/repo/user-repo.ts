@@ -1,14 +1,18 @@
-import { createSystemError } from './error-util';
-import { backendApiClient } from './backend-api-client';
 import {
+  findUser as findUserRepo,
+  createUser as createUserRepo,
+  updateUser as updateUserRepo,
   User,
   UserCreation,
   UserRole,
   UserStatus,
 } from '../__generated__/linkedup-backend-client';
+import { client } from '../__generated__/linkedup-backend-client/client.gen';
+
+import { callRepo } from './repo-util';
 
 interface FindUserParams {
-  id?: number[];
+  id?: string[];
   email?: string;
   name?: string;
   studentId?: string;
@@ -16,49 +20,52 @@ interface FindUserParams {
   status?: UserStatus[];
 }
 
-export const findUser = async ({
-  id,
-  email,
-  name,
-  studentId,
-  role,
-  status,
-}: FindUserParams): Promise<User[]> => {
-  try {
-    const u = await backendApiClient.userMaintenance.findUser(
-      id?.map((i) => i.toString()),
-      email,
-      name,
-      studentId,
-      status,
-      role
-    );
-    return u;
-  } catch (error: any) {
-    console.log(`backendApiClient error = ${JSON.stringify(error)}`);
-    throw createSystemError(error);
-  }
+export const findUser = async (
+  { id, email, name, studentId, role, status }: FindUserParams,
+  authorizationToken?: string
+): Promise<User[]> => {
+  return await callRepo(
+    () =>
+      findUserRepo({
+        client,
+        query: {
+          id,
+          email,
+          name,
+          studentId,
+          status,
+          role,
+        },
+      }),
+    authorizationToken
+  );
 };
 
-export const createUser = async (userCreation: UserCreation): Promise<User> => {
-  try {
-    return await backendApiClient.userMaintenance.createUser(userCreation);
-  } catch (error: any) {
-    throw createSystemError(error);
-  }
+export const createUser = async (
+  userCreation: UserCreation,
+  authorizationToken?: string
+): Promise<User> => {
+  return await callRepo(
+    () =>
+      createUserRepo({
+        body: userCreation,
+      }),
+    authorizationToken
+  );
 };
 
 export const updateUser = async (
   userId: string,
   version: number,
-  userUpdate: UserCreation
+  userUpdate: UserCreation,
+  authorizationToken?: string
 ): Promise<User> => {
-  try {
-    return await backendApiClient.userMaintenance.updateUser(userId, {
-      ...userUpdate,
-      version,
-    });
-  } catch (error: any) {
-    throw createSystemError(error);
-  }
+  return await callRepo(
+    () =>
+      updateUserRepo({
+        path: { id: userId },
+        body: { ...userUpdate, version },
+      }),
+    authorizationToken
+  );
 };

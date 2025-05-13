@@ -1,29 +1,28 @@
-import { AuthenticationResponse } from '../__generated__/linkedup-backend-client/models/AuthenticationResponse';
-import { createSystemError } from './error-util';
-import { backendApiClient } from './backend-api-client';
+import { Client } from '@hey-api/client-axios';
+import {
+  authenticateUser as authenticateUserRepo,
+  authenticateGoogleUser as authenticateGoogleUserRepo,
+  AuthenticationResponse,
+} from '../__generated__/linkedup-backend-client';
+import { callRepo } from './repo-util';
 
 export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<AuthenticationResponse> => {
-  try {
-    return await backendApiClient.userAuthentication.authenticateUser({
-      email,
-      password,
-    });
-  } catch (error: any) {
-    throw createSystemError(error);
-  }
+  return await callRepo(() =>
+    authenticateUserRepo({
+      body: { email, password },
+    })
+  );
 };
 
 export const googleAuthenticate = async (
-  accessToken: string,
+  accessToken: string
 ): Promise<AuthenticationResponse> => {
-  try {
-    return await backendApiClient.userAuthentication.authenticateGoogleUser({
-      accessToken,
-    });
-  } catch (error: any) {
-    throw createSystemError(error);
-  }
+  return await callRepo(() =>
+    authenticateGoogleUserRepo({
+      body: { accessToken },
+    })
+  );
 };

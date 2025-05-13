@@ -10,9 +10,11 @@ import googleAuthenticationRouter from './rest/route/google-authentication-end-p
 import userMaintenanceRouter from './rest/route/user-maintenance-end-point';
 import studentRouter from './rest/route/student-end-point';
 import { errorHandler } from './rest/middleware/error-handler';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(
   cors({
     // origin: '*', // Allow all origins
