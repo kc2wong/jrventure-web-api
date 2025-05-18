@@ -15,7 +15,7 @@ export const getStudentById = async (
   res: Response<GetStudentById200ResponseDto>,
   next: NextFunction
 ) => {
-  const jwt = req.cookies.jwt;
+
   const id = req.params.id;
   let byId: Student | undefined;
   let byIdError: any;
@@ -23,13 +23,13 @@ export const getStudentById = async (
   let byClassError: any;
 
   try {
-    byId = await findStudentById(id, jwt);
+    byId = await findStudentById(id);
   } catch (err) {
     byIdError = err;
   }
 
   try {
-    byClass = await findStudentByClassIdStudentNumber(id, jwt);
+    byClass = await findStudentByClassIdStudentNumber(id);
   } catch (err) {
     byClassError = err;
   }
@@ -51,11 +51,10 @@ export const getStudentById = async (
 };
 
 const findStudentById = async (
-  id: string,
-  authorizationToken ?: string
+  id: string
 ): Promise<Student | undefined> => {
   try {
-    const result = await findStudentEntity([id], authorizationToken);
+    const result = await findStudentEntity([id]);
     return result.length === 1 ? result[0] : undefined;
   } catch (error: any) {
     throw error;
@@ -63,19 +62,16 @@ const findStudentById = async (
 };
 
 const findStudentByClassIdStudentNumber = async (
-  classIdStudentNumber: string,
-  authorizationToken ?: string
+  classIdStudentNumber: string
 ): Promise<Student | undefined> => {
   try {
     const classId = classIdStudentNumber.substring(0, 2);
     const studentNumber = safeParseInt(
       classIdStudentNumber.substring(2).split('-').pop() ?? ''
     );
-    console.log(`classId = ${classId} studentNumber = ${studentNumber}`)
-    const result = (await findStudentEntity(undefined, classId, undefined, authorizationToken)).filter(
-      (s) => s.studentNumber == studentNumber
+    const result = (await findStudentEntity(undefined, classId)).filter(
+      (s) => s.studentNumber === studentNumber
     );
-    console.log(`result = ${JSON.stringify(result)}`)
     return result.length === 1 ? result[0] : undefined;
   } catch (error: any) {
     throw error;

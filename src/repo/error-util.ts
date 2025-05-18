@@ -1,17 +1,26 @@
-import { _Error as ErrorModel } from '../__generated__/linkedup-backend-client';
+import { Error as ErrorModel } from '../__generated__/linkedup-backend-client/models/Error';
 
+const getErrorStatus = (error: any): number | undefined => {
+  if (
+    error &&
+    typeof error === 'object' &&
+    'status' in error &&
+    typeof error.status === 'number' &&
+    Number.isInteger(error.status)
+  ) {
+    return error.status;
+  }
+
+  return undefined;
+};
 
 export const createSystemError = (
-  error: any,
-  status?: number
+  error: any
 ): ErrorModel & { httpStatus: number } => {
-  if ('code' in error && 'message' in error) {
-    throw {
-      code: error.code,
-      message: error.message,
-      parameter: error.parameter ?? [],
-      httpStatus: status ?? 500,
-    };
+  const httpStatus = getErrorStatus(error);
+  if (httpStatus && error.body && error.body.code && error.body.message) {
+    const errorModel = error.body;
+    throw { httpStatus, ...errorModel };
   } else {
     const message = error.message ?? error.toString();
     throw {

@@ -1,19 +1,14 @@
+import { createSystemError } from './error-util';
+import { backendApiClient } from './backend-api-client';
 import {
-  createUser,
   User,
   UserRegistration,
 } from '../__generated__/linkedup-backend-client';
-import { callRepo } from './repo-util';
 
-export const registerUser = async (
-  userRegistration: UserRegistration,
-  authorizationToken?: string
-): Promise<User> => {
-  return await callRepo(
-    () =>
-      createUser({
-        body: userRegistration,
-      }),
-    authorizationToken
-  );
+export const registerUser = async (userRegistration: UserRegistration): Promise<User> => {
+  try {
+    return await backendApiClient.userMaintenance.createUser(userRegistration);
+  } catch (error: any) {
+    throw createSystemError(error);
+  }
 };
