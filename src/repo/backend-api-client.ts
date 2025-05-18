@@ -1,9 +1,15 @@
-import { BackendApiClient } from '../__generated__/linkedup-backend-client';
+import { createClient } from '@hey-api/client-axios';
 
-// Create the client instance with server and authentication details
-const backendApiClient = new BackendApiClient({
-  // BASE: 'https://sad6ntmjsh.execute-api.eu-west-2.amazonaws.com/prod',
-  BASE: process.env.BACKEND_API_URL,
+export const defaultClient = createClient({
+  // set default base url for requests made by this client
+  baseURL: process.env.BACKEND_API_URL,
+  /**
+   * Set default headers only for requests made by this client. This is to
+   * demonstrate local clients and their configuration taking precedence over
+   * global configuration.
+   */
+  // headers: {
+  //   Authorization: 'Bearer <token_from_local_client>',
+  // },
 });
 
-export { backendApiClient };

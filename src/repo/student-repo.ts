@@ -1,26 +1,34 @@
-import { createSystemError } from './error-util';
-import { backendApiClient } from './backend-api-client';
-import { Student } from '../__generated__/linkedup-backend-client';
+import {
+  findStudent as findStudentRepo,
+  Student,
+} from '../__generated__/linkedup-backend-client';
+import { callRepo } from './repo-util';
 
 export const getStudentById = async (
-  id: string
+  id: string,
+  authorizationToken?: string
 ): Promise<Student | undefined> => {
-  try {
-    const result = await backendApiClient.student.findStudent([id]);
-    return result.length === 1 ? result[0] : undefined;
-  } catch (error: any) {
-    throw createSystemError(error);
-  }
+  const result = await callRepo(
+    () =>
+      findStudentRepo({
+        query: { id: [id] },
+      }),
+    authorizationToken
+  );
+  return result.length === 1 ? result[0] : undefined;
 };
 
 export const findStudent = async (
   ids?: string[],
   classId?: string,
-  name?: string
+  name?: string,
+  authorizationToken?: string
 ): Promise<Student[]> => {
-  try {
-    return await backendApiClient.student.findStudent(ids, classId, name);
-  } catch (error: any) {
-    throw createSystemError(error);
-  }
+  return await callRepo(
+    () =>
+      findStudentRepo({
+        query: { id: ids, classId, name },
+      }),
+    authorizationToken
+  );
 };

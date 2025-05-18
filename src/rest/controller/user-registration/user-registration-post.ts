@@ -6,7 +6,6 @@ import {
 } from '../../dto-schema';
 
 import { registerUser as registerUserRepo } from '../../../repo/user-registration-repo';
-import { findStudent as findStudentRepo } from '../../../repo/student-repo';
 import { entity2Dto } from '../../../mapper/user-mapper';
 import { getStudents } from '../user/user-enrichment';
 
@@ -22,12 +21,16 @@ export const registerUser = async (
   next: NextFunction
 ) => {
   try {
+    const jwt = req.cookies.jwt;
     const { studentId, studentName, accessToken } = req.body;
-    const newUser = await registerUserRepo({
-      accessToken,
-      studentId,
-      studentName,
-    });
+    const newUser = await registerUserRepo(
+      {
+        accessToken,
+        studentId,
+        studentName,
+      },
+      jwt
+    );
 
     const studentMap = await getStudents([newUser]);
 

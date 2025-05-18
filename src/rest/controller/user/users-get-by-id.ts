@@ -6,8 +6,7 @@ import {
   NotFoundErrorDto,
 } from '../../dto-schema';
 
-import { findUser } from '../../../repo/user-repo';
-import { safeParseInt } from '../../../util/string-util';
+import { findUser as findUserRepo } from '../../../repo/user-repo';
 import { entity2Dto } from '../../../mapper/user-mapper';
 
 const systemUser: SimpleUserDto = {
@@ -23,17 +22,13 @@ export const getUserById = async (
 ) => {
   try {
     const idRaw = req.params.id;
-    const id = safeParseInt(idRaw);
     const notFoundErrorDto = new NotFoundErrorDto(
       'USER_NOT_FOUND',
       `User with id [${idRaw}] is not found`,
       [idRaw]
     );
-    if (id === undefined) {
-      throw notFoundErrorDto;
-    }
 
-    const users = await findUser({ id: [id] });
+    const users = await findUserRepo({ id: [idRaw] }, res.locals.client);
     if (users.length != 1) {
       throw notFoundErrorDto;
     }

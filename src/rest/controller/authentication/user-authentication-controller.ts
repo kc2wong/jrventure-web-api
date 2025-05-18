@@ -4,10 +4,6 @@ import {
   UserAuthenticationPost200ResponseDto,
   SimpleUserDto,
 } from '../../dto-schema';
-import {
-  AuthenticationStatus,
-  UserRole,
-} from '../../../__generated__/linkedup-backend-client';
 import { authenticateUser } from '../../../repo/user-authentication-repo';
 import { generateAuthResponse } from './base-authentication-controller';
 import { findUser as findUserRepo } from '../../../repo/user-repo';
@@ -21,9 +17,14 @@ export const userAuthenticationPost = async (
     const result = await authenticateUser(req.body.email, req.body.password);
     const { token, menu } = await generateAuthResponse(result.user);
     const parentUser: SimpleUserDto[] =
-      result.user.role === UserRole.STUDENT
-        ? (await findUserRepo({ studentId: result.user.entitledStudentId[0] }))
-            .filter((u) => u.role === UserRole.PARENT)
+      result.user.role === 'Student'
+        ? (
+            await findUserRepo(
+              { studentId: result.user.entitledStudentId[0] },
+              undefined
+            )
+          )
+            .filter((u) => u.role === 'Parent')
             .map(({ id, email, name }) => ({ id, email, name }))
         : [];
     res.cookie('jwt', token, {
@@ -34,7 +35,7 @@ export const userAuthenticationPost = async (
     });
 
     res.status(200).json(
-      result.status === AuthenticationStatus.SUCCESS
+      result.status === 'Success'
         ? { token, menu, parentUser: parentUser }
         : {
             token,

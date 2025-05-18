@@ -1,16 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import {
-  UserAuthenticationPostRequestDto,
-  UserAuthenticationPost200ResponseDto,
-  SimpleUserDto,
-} from '../../dto-schema';
+import jsonwebtoken from 'jsonwebtoken';
+import { SimpleUserDto } from '../../dto-schema';
 
-import {
-  AuthenticationStatus,
-  User,
-} from '../../../__generated__/linkedup-backend-client';
-import { authenticateUser } from '../../../repo/user-authentication-repo';
+import { User } from '../../../__generated__/linkedup-backend-client';
 import { getStudentById as getStudentByIdRepo } from '../../../repo/student-repo';
 import { entity2Dto as userEntity2Dto } from '../../../mapper/user-mapper';
 
@@ -48,17 +39,24 @@ const systemUser: SimpleUserDto = {
   name: { English: 'Administrator' },
 };
 
-const getEntitledStudents = async (entitledStudentIds?: string[]) => {
+const getEntitledStudents = async (
+  entitledStudentIds?: string[],
+  authorizationToken ?: string,
+) => {
   if (!entitledStudentIds) return [];
   const students = await Promise.all(
-    entitledStudentIds.map(getStudentByIdRepo)
+    entitledStudentIds.map((i) => getStudentByIdRepo(i, authorizationToken))
   );
   return students.filter((s) => s !== undefined);
 };
 
-export const generateAuthResponse = async (userEntity: User) => {
+export const generateAuthResponse = async (
+  userEntity: User,
+  authorizationToken ?: string,
+) => {
   const entitledStudents = await getEntitledStudents(
-    userEntity.entitledStudentId
+    userEntity.entitledStudentId,
+    authorizationToken,
   );
   const user = userEntity2Dto(
     userEntity,
@@ -66,7 +64,7 @@ export const generateAuthResponse = async (userEntity: User) => {
     systemUser,
     systemUser
   );
-  const token = jwt.sign({ user }, 'secret');
+  const token = jsonwebtoken.sign({ user }, 'secret');
 
   const menu = {
     id: 'muRoot',
