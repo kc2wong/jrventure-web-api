@@ -1,4 +1,3 @@
-import { Client } from '@hey-api/client-axios';
 import {
   authenticateUser as authenticateUserRepo,
   authenticateGoogleUser as authenticateGoogleUserRepo,
@@ -10,6 +9,7 @@ export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<AuthenticationResponse> => {
+  
   return await callRepo(() =>
     authenticateUserRepo({
       body: { email, password },

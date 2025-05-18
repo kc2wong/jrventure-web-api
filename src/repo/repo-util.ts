@@ -1,6 +1,10 @@
 import { client } from '../__generated__/linkedup-backend-client/client.gen';
 import { createSystemError } from './error-util';
 
+client.setConfig({
+  baseURL: process.env.BACKEND_API_URL,
+});
+
 export const callRepo = async <T>(
   repoCall: () => Promise<{ data?: T; error?: any; status?: number }>,
   authorizationToken?: string

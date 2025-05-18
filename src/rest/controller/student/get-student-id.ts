@@ -71,7 +71,6 @@ const findStudentByClassIdStudentNumber = async (
     const studentNumber = safeParseInt(
       classIdStudentNumber.substring(2).split('-').pop() ?? ''
     );
-    console.log(`classId = ${classId} studentNumber = ${studentNumber}`)
     const result = (await findStudentEntity(undefined, classId, undefined, authorizationToken)).filter(
       (s) => s.studentNumber == studentNumber
     );

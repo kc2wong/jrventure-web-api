@@ -7,7 +7,6 @@ import {
   UserRole,
   UserStatus,
 } from '../__generated__/linkedup-backend-client';
-import { client } from '../__generated__/linkedup-backend-client/client.gen';
 
 import { callRepo } from './repo-util';
 
@@ -27,7 +26,6 @@ export const findUser = async (
   return await callRepo(
     () =>
       findUserRepo({
-        client,
         query: {
           id,
           email,
