@@ -31,7 +31,7 @@ type FindStudent200ResponseDto =
 type GetStudentByIdPathDto =
   paths['/students/{id}']['get']['parameters']['path'];
 
-  type GetStudentById200ResponseDto =
+type GetStudentById200ResponseDto =
   paths['/students/{id}']['get']['responses']['200']['content']['application/json'];
 
 type GetUserByIdPathDto = paths['/users/{id}']['get']['parameters']['path'];
@@ -53,11 +53,15 @@ type UsersPutRequestBodyDto =
 type UsersPut200ResponseDto =
   paths['/users/{id}']['put']['responses']['200']['content']['application/json'];
 
+type ActivityCategoryGet200ResponseDto =
+  paths['/activity-categories']['get']['responses']['200']['content']['application/json'];
+
 type SimpleUserDto = components['schemas']['SimpleUser'];
 type UserDto = components['schemas']['User'];
 type UserRoleDto = components['schemas']['UserRole'];
 type UserStatusDto = components['schemas']['UserStatus'];
 type StudentDto = components['schemas']['Student'];
+type ActivityCategoryDto = components['schemas']['ActivityCategory'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -97,6 +101,7 @@ export {
   UsersPutRequestPathDto,
   UsersPutRequestBodyDto,
   UsersPut200ResponseDto,
+  ActivityCategoryGet200ResponseDto,
   BadRequestErrorDto,
   NotFoundErrorDto,
   UnauthorizedErrorDto,
@@ -106,4 +111,5 @@ export {
   UserRoleDto,
   UserStatusDto,
   StudentDto,
+  ActivityCategoryDto,
 };

@@ -13,6 +13,8 @@ tags:
     description: User Authentication
   - name: Student
     description: Student
+  - name: Activity
+    description: Activity and Achievement
 
 servers:
   - url: http://localhost:8080
@@ -418,6 +420,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  /activity-categories:
+    get:
+      summary: List all activity category
+      operationId: listActivityCategory
+      tags:
+        - Activity
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityCategory"
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"  
+                
 components:
   securitySchemes:
     jwtCookieAuth:
@@ -748,3 +773,14 @@ components:
           type: array
           items:
           $ref: "#/components/schemas/Product"
+
+    ActivityCategory:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          $ref: "#/components/schemas/MultiLingual"
