@@ -28,7 +28,8 @@ export const createUser = async (
 ) => {
   try {
     const jwt = req.cookies.jwt;
-    const { email, name, role, status, entitledStudentId } = req.body;
+    const { email, name, role, status, entitledStudentId, withApprovalRight } =
+      req.body;
 
     let existingParent: User | undefined;
     if (role === 'Parent') {
@@ -56,6 +57,7 @@ export const createUser = async (
               ...existingParent.entitledStudentId,
               ...entitledStudentId,
             ],
+            withApprovalRight,
           },
           jwt
         )
@@ -66,6 +68,7 @@ export const createUser = async (
             role: userRoleDto2Entity(role),
             status: userStatusDto2Entity(status),
             entitledStudentId: entitledStudentId ?? [],
+            withApprovalRight,
           },
           jwt
         );

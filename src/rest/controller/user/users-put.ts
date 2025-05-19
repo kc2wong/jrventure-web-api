@@ -24,7 +24,7 @@ export const updateUser = async (
 ) => {
   try {
     const jwt = req.cookies.jwt;
-    const { email, name, role, status, entitledStudentId, version } = req.body;
+    const { email, name, role, status, entitledStudentId, withApprovalRight, version } = req.body;
     const updatedUser = await updateUserRepo(
       req.params.id,
       version,
@@ -34,6 +34,7 @@ export const updateUser = async (
         role: userRoleDto2Entity(role),
         status: userStatusDto2Entity(status),
         entitledStudentId: entitledStudentId ?? [],
+        withApprovalRight,
       },
       jwt
     );
