@@ -1,4 +1,4 @@
-import { Student, User } from '../../../__generated__/linkedup-backend-client';
+import { AuditControl, Student, User } from '../../../__generated__/linkedup-backend-client';
 import { findStudent as findStudentRepo } from '../../../repo/student-repo';
 import { findUser as findUserRepo } from '../../../repo/user-repo';
 import { SimpleUserDto } from '../../dto-schema';
@@ -26,12 +26,12 @@ export const getStudents = async (
 };
 
 export const getCreatedUpdatedBy = async (
-  users: User[]
+  auditControl: AuditControl[]
 ): Promise<Map<string, SimpleUserDto>> => {
   const userIds = [
     ...new Set([
-      ...users.map((u) => u.createdBy),
-      ...users.map((u) => u.updatedBy),
+      ...auditControl.map((u) => u.createdBy),
+      ...auditControl.map((u) => u.updatedBy),
     ]),
   ];
   const createdUpdatedBy = await findUserRepo({

@@ -12,12 +12,6 @@ import { findUser as findUserRepo } from '../../../repo/user-repo';
 import { asArray } from '../../../util/array-util';
 import { getCreatedUpdatedBy, getStudents } from './user-enrichment';
 
-const systemUser: SimpleUserDto = {
-  id: '1',
-  email: 'xxx@abc.com',
-  name: { English: 'Administrator' },
-};
-
 export const findUser = async (
   req: Request<{}, {}, {}, FindUserQueryDto>,
   res: Response<FindUser200ResponseDto>,

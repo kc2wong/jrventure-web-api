@@ -25,6 +25,8 @@ type FindUser200ResponseDto =
 
 type FindStudentQueryDto = paths['/students']['get']['parameters']['query'];
 
+type ActivityGetQueryDto = paths['/activities']['get']['parameters']['query'];
+
 type FindStudent200ResponseDto =
   paths['/students']['get']['responses']['200']['content']['application/json'];
 
@@ -56,12 +58,25 @@ type UsersPut200ResponseDto =
 type ActivityCategoryGet200ResponseDto =
   paths['/activity-categories']['get']['responses']['200']['content']['application/json'];
 
+type ActivityGet200ResponseDto =
+  paths['/activities']['get']['responses']['200']['content']['application/json'];
+
+type ActivityGetByIdPathDto =
+  paths['/activities/{id}']['get']['parameters']['path'];
+
+type ActivityGetById200ResponseDto =
+  paths['/activities/{id}']['get']['responses']['200']['content']['application/json'];
+
 type SimpleUserDto = components['schemas']['SimpleUser'];
 type UserDto = components['schemas']['User'];
 type UserRoleDto = components['schemas']['UserRole'];
 type UserStatusDto = components['schemas']['UserStatus'];
 type StudentDto = components['schemas']['Student'];
 type ActivityCategoryDto = components['schemas']['ActivityCategory'];
+type ActivityStatusDto = components['schemas']['ActivityStatus'];
+type AchievementSubmissionRoleDto =
+  components['schemas']['AchievementSubmissionRole'];
+type ActivityDto = components['schemas']['Activity'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -92,6 +107,7 @@ export {
   FindUser200ResponseDto,
   FindStudentQueryDto,
   FindStudent200ResponseDto,
+  ActivityGetQueryDto,
   GetStudentByIdPathDto,
   GetStudentById200ResponseDto,
   GetUserByIdPathDto,
@@ -102,6 +118,9 @@ export {
   UsersPutRequestBodyDto,
   UsersPut200ResponseDto,
   ActivityCategoryGet200ResponseDto,
+  ActivityGet200ResponseDto,
+  ActivityGetByIdPathDto,
+  ActivityGetById200ResponseDto,
   BadRequestErrorDto,
   NotFoundErrorDto,
   UnauthorizedErrorDto,
@@ -112,4 +131,7 @@ export {
   UserStatusDto,
   StudentDto,
   ActivityCategoryDto,
+  ActivityStatusDto,
+  AchievementSubmissionRoleDto,
+  ActivityDto,
 };
