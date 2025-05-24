@@ -4,8 +4,8 @@ import {
   ActivityGetQueryDto,
 } from '../../dto-schema';
 import { findActivity as findActivityRepo } from '../../../repo/activity-repo';
-import { entity2Dto } from '../../../mapper/activity-mapper';
-import { getCreatedUpdatedBy } from '../user/user-enrichment';
+import { entity2DetailDto } from '../../../mapper/activity-mapper';
+import { getCreatedUpdatedBy } from '../user-enrichment';
 
 export const findActivity = async (
   req: Request<{}, {}, {}, ActivityGetQueryDto>,
@@ -42,7 +42,7 @@ export const findActivity = async (
       .status(200)
       .json(
         result.map((u) =>
-          entity2Dto(
+          entity2DetailDto(
             u,
             createdUpdatedByMap.get(u.createdBy)!,
             createdUpdatedByMap.get(u.updatedBy)!

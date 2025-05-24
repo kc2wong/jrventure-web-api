@@ -12,7 +12,7 @@ import {
 import { entity2Dto } from '../../../mapper/user-mapper';
 import { dto2Entity as userRoleDto2Entity } from '../../../mapper/user-role-mapper';
 import { dto2Entity as userStatusDto2Entity } from '../../../mapper/user-status-mapper';
-import { getStudents } from './user-enrichment';
+import { getStudents } from '../user-enrichment';
 import { User } from '../../../__generated__/linkedup-backend-client';
 
 const systemUser: SimpleUserDto = {

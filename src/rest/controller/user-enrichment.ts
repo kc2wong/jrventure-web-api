@@ -1,7 +1,7 @@
-import { AuditControl, Student, User } from '../../../__generated__/linkedup-backend-client';
-import { findStudent as findStudentRepo } from '../../../repo/student-repo';
-import { findUser as findUserRepo } from '../../../repo/user-repo';
-import { SimpleUserDto } from '../../dto-schema';
+import { AuditControl, Student, User } from '../../__generated__/linkedup-backend-client';
+import { findStudent as findStudentRepo } from '../../repo/student-repo';
+import { findUser as findUserRepo } from '../../repo/user-repo';
+import { SimpleUserDto } from '../dto-schema';
 
 const unknownUser: SimpleUserDto = {
   id: '-1',

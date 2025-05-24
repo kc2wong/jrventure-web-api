@@ -9,7 +9,7 @@ import { updateUser as updateUserRepo } from '../../../repo/user-repo';
 import { entity2Dto } from '../../../mapper/user-mapper';
 import { dto2Entity as userRoleDto2Entity } from '../../../mapper/user-role-mapper';
 import { dto2Entity as userStatusDto2Entity } from '../../../mapper/user-status-mapper';
-import { getStudents } from './user-enrichment';
+import { getStudents } from '../user-enrichment';
 
 const systemUser: SimpleUserDto = {
   id: '1',

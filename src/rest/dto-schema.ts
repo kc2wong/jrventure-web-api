@@ -61,6 +61,20 @@ type ActivityCategoryGet200ResponseDto =
 type ActivityGet200ResponseDto =
   paths['/activities']['get']['responses']['200']['content']['application/json'];
 
+type ActivityPostRequestBodyDto =
+  paths['/activities']['post']['requestBody']['content']['application/json'];
+
+type ActivityPost201ResponseDto =
+  paths['/activities']['post']['responses']['201']['content']['application/json'];
+
+type ActivityPutRequestPathDto = paths['/activities/{id}']['put']['parameters']['path'];
+
+type ActivityPutRequestBodyDto =
+  paths['/activities/{id}']['put']['requestBody']['content']['application/json'];
+
+type ActivityPut200ResponseDto =
+  paths['/activities/{id}']['put']['responses']['200']['content']['application/json'];
+
 type ActivityGetByIdPathDto =
   paths['/activities/{id}']['get']['parameters']['path'];
 
@@ -76,7 +90,9 @@ type ActivityCategoryDto = components['schemas']['ActivityCategory'];
 type ActivityStatusDto = components['schemas']['ActivityStatus'];
 type AchievementSubmissionRoleDto =
   components['schemas']['AchievementSubmissionRole'];
+type ActivityPayloadDto = components['schemas']['ActivityPayload'];
 type ActivityDto = components['schemas']['Activity'];
+type ActivityDetailDto = components['schemas']['ActivityDetail'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -121,6 +137,11 @@ export {
   ActivityGet200ResponseDto,
   ActivityGetByIdPathDto,
   ActivityGetById200ResponseDto,
+  ActivityPostRequestBodyDto,
+  ActivityPost201ResponseDto,
+  ActivityPutRequestPathDto,
+  ActivityPutRequestBodyDto,
+  ActivityPut200ResponseDto,
   BadRequestErrorDto,
   NotFoundErrorDto,
   UnauthorizedErrorDto,
@@ -133,5 +154,7 @@ export {
   ActivityCategoryDto,
   ActivityStatusDto,
   AchievementSubmissionRoleDto,
+  ActivityPayloadDto,
   ActivityDto,
+  ActivityDetailDto,
 };

@@ -10,7 +10,7 @@ import { entity2Dto } from '../../../mapper/user-mapper';
 
 import { findUser as findUserRepo } from '../../../repo/user-repo';
 import { asArray } from '../../../util/array-util';
-import { getCreatedUpdatedBy, getStudents } from './user-enrichment';
+import { getCreatedUpdatedBy, getStudents } from '../user-enrichment';
 
 export const findUser = async (
   req: Request<{}, {}, {}, FindUserQueryDto>,

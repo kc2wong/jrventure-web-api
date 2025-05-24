@@ -7,7 +7,7 @@ import {
 
 import { registerUser as registerUserRepo } from '../../../repo/user-registration-repo';
 import { entity2Dto } from '../../../mapper/user-mapper';
-import { getStudents } from '../user/user-enrichment';
+import { getStudents } from '../user-enrichment';
 
 const systemUser: SimpleUserDto = {
   id: '1',

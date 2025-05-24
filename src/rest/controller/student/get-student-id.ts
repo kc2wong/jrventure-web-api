@@ -74,7 +74,6 @@ const findStudentByClassIdStudentNumber = async (
     const result = (await findStudentEntity(undefined, classId, undefined, authorizationToken)).filter(
       (s) => s.studentNumber == studentNumber
     );
-    console.log(`result = ${JSON.stringify(result)}`)
     return result.length === 1 ? result[0] : undefined;
   } catch (error: any) {
     throw error;

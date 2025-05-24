@@ -1,15 +1,18 @@
 import {
   findActivity as findActivityRepo,
   getActivityById as getActivityByIdRepo,
+  createActivity as createActivityRepo,
+  updateActivity as updateActivityRepo,
   Activity,
   ActivityStatus,
+  ActivityPayload,
 } from '../__generated__/linkedup-backend-client';
 import { dto2Entity as activityStatusDto2Entity } from '../mapper/activity-status-mapper';
 import { callRepo } from './repo-util';
 
 type FindActivityParams = {
   categoryCode?: string[];
-  name?: string,
+  name?: string;
   startDateFrom?: Date;
   startDateTo?: Date;
   endDateFrom?: Date;
@@ -47,6 +50,35 @@ export const getActivityById = async (
 ): Promise<Activity> => {
   return await callRepo(
     () => getActivityByIdRepo({ path: { id } }),
+    authorizationToken
+  );
+};
+
+export const createActivity = async (
+  payload: ActivityPayload,
+  authorizationToken?: string
+): Promise<Activity> => {
+  return await callRepo(
+    () =>
+      createActivityRepo({
+        body: payload,
+      }),
+    authorizationToken
+  );
+};
+
+export const updateActivity = async (
+  activityId: string,
+  version: number,
+  payload: ActivityPayload,
+  authorizationToken?: string
+): Promise<Activity> => {
+  return await callRepo(
+    () =>
+      updateActivityRepo({
+        path: { id: activityId },
+        body: { ...payload, version },
+      }),
     authorizationToken
   );
 };
