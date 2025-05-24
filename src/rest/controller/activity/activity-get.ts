@@ -4,8 +4,8 @@ import {
   ActivityGetQueryDto,
 } from '../../dto-schema';
 import { findActivity as findActivityRepo } from '../../../repo/activity-repo';
-import { entity2DetailDto } from '../../../mapper/activity-mapper';
-import { getCreatedUpdatedBy } from '../user-enrichment';
+import { entity2Dto } from '../../../mapper/activity-mapper';
+import { asArray } from '../../../util/array-util';
 
 export const findActivity = async (
   req: Request<{}, {}, {}, ActivityGetQueryDto>,
@@ -13,6 +13,7 @@ export const findActivity = async (
   next: NextFunction
 ) => {
   try {
+
     const jwt = req.cookies.jwt;
     const categoryCode = req.query?.categoryCode;
     const name = req.query?.name;
@@ -22,33 +23,31 @@ export const findActivity = async (
     const endDateTo = req.query?.endDateTo;
     const status = req.query?.status;
     const participantGrade = req.query?.participantGrade;
+    const inOffset = req.query.offset;
+    const inLimit = req.query.limit;
 
-    const result = await findActivityRepo(
+    const { offset, limit, total, data } = await findActivityRepo(
       {
-        categoryCode,
+        categoryCode: categoryCode ? asArray(categoryCode) : undefined,
         name,
-        status,
-        participantGrade,
+        status: status ? asArray(status) : undefined,
+        participantGrade : participantGrade ? asArray(participantGrade) : undefined,
         startDateFrom: startDateFrom ? new Date(startDateFrom) : undefined,
         startDateTo: startDateTo ? new Date(startDateTo) : undefined,
         endDateFrom: endDateFrom ? new Date(endDateFrom) : undefined,
         endDateTo: endDateTo ? new Date(endDateTo) : undefined,
+        offset: inOffset,
+        limit: inLimit,
       },
       jwt
     );
-    const createdUpdatedByMap = await getCreatedUpdatedBy(result);
 
-    res
-      .status(200)
-      .json(
-        result.map((u) =>
-          entity2DetailDto(
-            u,
-            createdUpdatedByMap.get(u.createdBy)!,
-            createdUpdatedByMap.get(u.updatedBy)!
-          )
-        )
-      );
+    res.status(200).json({
+      offset: offset ?? inOffset,
+      limit: limit ?? inLimit,
+      total,
+      data: data.map((act) => entity2Dto(act)),
+    });
   } catch (error: any) {
     console.log(`findActivityRepo error = ${JSON.stringify(error)}`);
     next(error);

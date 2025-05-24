@@ -1,3 +1,4 @@
+import { off } from 'process';
 import {
   findActivity as findActivityRepo,
   getActivityById as getActivityByIdRepo,
@@ -6,6 +7,7 @@ import {
   Activity,
   ActivityStatus,
   ActivityPayload,
+  FindActivityResult,
 } from '../__generated__/linkedup-backend-client';
 import { dto2Entity as activityStatusDto2Entity } from '../mapper/activity-status-mapper';
 import { callRepo } from './repo-util';
@@ -19,12 +21,14 @@ type FindActivityParams = {
   endDateTo?: Date;
   participantGrade?: number[];
   status?: ActivityStatus[]; // classId and studentNumber
+  offset: number;
+  limit: number;
 };
 
 export const findActivity = async (
   args: FindActivityParams,
   authorizationToken?: string
-): Promise<Activity[]> => {
+): Promise<FindActivityResult> => {
   const {
     startDateFrom,
     startDateTo,
