@@ -8,6 +8,7 @@ import {
   ActivityStatus,
   ActivityPayload,
   FindActivityResult,
+  OrderByDirection,
 } from '../__generated__/linkedup-backend-client';
 import { dto2Entity as activityStatusDto2Entity } from '../mapper/activity-status-mapper';
 import { callRepo } from './repo-util';
@@ -23,6 +24,8 @@ type FindActivityParams = {
   status?: ActivityStatus[]; // classId and studentNumber
   offset: number;
   limit: number;
+  orderByField: 'Name' | 'StartDate' | 'EndDate',
+  orderByDirection: OrderByDirection
 };
 
 export const findActivity = async (

@@ -25,6 +25,8 @@ export const findActivity = async (
     const participantGrade = req.query?.participantGrade;
     const inOffset = req.query.offset;
     const inLimit = req.query.limit;
+    const orderByField = req.query.orderByField;
+    const orderByDirection = req.query.orderByDirection;
 
     const { offset, limit, total, data } = await findActivityRepo(
       {
@@ -38,6 +40,8 @@ export const findActivity = async (
         endDateTo: endDateTo ? new Date(endDateTo) : undefined,
         offset: inOffset,
         limit: inLimit,
+        orderByField: orderByField,
+        orderByDirection: orderByDirection,
       },
       jwt
     );
