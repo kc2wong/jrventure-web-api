@@ -11,12 +11,15 @@ import userMaintenanceRouter from './rest/route/user-maintenance-end-point';
 import studentRouter from './rest/route/student-end-point';
 import activityCategoryRouter from './rest/route/activity-category-end-point';
 import activityRouter from './rest/route/activity-end-point';
+import achievementRouter from './rest/route/achievement-end-point';
 import { errorHandler } from './rest/middleware/error-handler';
 import cookieParser from 'cookie-parser';
+import { jwtHandler } from './rest/middleware/jwt-handler';
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(jwtHandler);
 app.use(
   cors({
     // origin: '*', // Allow all origins
@@ -42,6 +45,7 @@ app.use('/users', userMaintenanceRouter);
 app.use('/students', studentRouter);
 app.use('/activity-categories', activityCategoryRouter);
 app.use('/activities', activityRouter);
+app.use('/achievements', achievementRouter);
 app.use(errorHandler); // Global error handler
 
 export default app;

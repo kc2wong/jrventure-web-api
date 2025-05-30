@@ -14,7 +14,7 @@ export const googleAuthenticationPost = async (
   next: NextFunction
 ) => {
   try {
-    const client = res.locals.client;
+    // const client = res.locals.client;
     const result = await googleAuthenticate(req.body.accessToken);
 
     if (result.status === 'Success') {
@@ -26,7 +26,7 @@ export const googleAuthenticationPost = async (
                 {
                   studentId: result.user.entitledStudentId[0],
                 },
-                client
+                token
               )
             )
               .filter((u) => u.role === 'Parent')

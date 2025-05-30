@@ -39,9 +39,16 @@ const systemUser: SimpleUserDto = {
   name: { English: 'Administrator' },
 };
 
+const tempUser = {
+  id: '1',
+  withApprovalRight: true,
+  entitledStudentId: [],
+  role: 'Admin',
+};
+
 const getEntitledStudents = async (
   entitledStudentIds?: string[],
-  authorizationToken ?: string,
+  authorizationToken?: string
 ) => {
   if (!entitledStudentIds) return [];
   const students = await Promise.all(
@@ -50,21 +57,33 @@ const getEntitledStudents = async (
   return students.filter((s) => s !== undefined);
 };
 
+const generateSystemUserToken = () => {
+  const payload = {
+    user: {
+      id: '1',
+      entitledStudentId: [],
+      role: 'Admin',
+      withApprovalRight: true,
+    },
+  };
+  return jsonwebtoken.sign(payload, 'secret', {
+    expiresIn: new Date().getTime() + 1000 * 60 * 10,
+  });
+};
+
 export const generateAuthResponse = async (
   userEntity: User,
-  authorizationToken ?: string,
+  authorizationToken?: string
 ) => {
+  const tempToken = generateSystemUserToken();
   const entitledStudents = await getEntitledStudents(
     userEntity.entitledStudentId,
-    authorizationToken,
+    tempToken
   );
-  const user = userEntity2Dto(
-    userEntity,
-    entitledStudents,
-    systemUser,
-    systemUser
-  );
-  const token = jsonwebtoken.sign({ user }, 'secret');
+  const payload = {
+    user: userEntity2Dto(userEntity, entitledStudents, systemUser, systemUser),
+  };
+  const token = jsonwebtoken.sign(payload, 'secret');
 
   const menu = {
     id: 'muRoot',

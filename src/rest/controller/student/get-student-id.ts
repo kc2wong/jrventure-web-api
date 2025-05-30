@@ -29,7 +29,7 @@ export const getStudentById = async (
   }
 
   try {
-    byClass = await findStudentByClassIdStudentNumber(id, jwt);
+    byClass = await findStudentByClassIdStudentNumber(id.toUpperCase(), jwt);
   } catch (err) {
     byClassError = err;
   }

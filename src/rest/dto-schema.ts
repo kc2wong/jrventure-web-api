@@ -67,7 +67,8 @@ type ActivityPostRequestBodyDto =
 type ActivityPost201ResponseDto =
   paths['/activities']['post']['responses']['201']['content']['application/json'];
 
-type ActivityPutRequestPathDto = paths['/activities/{id}']['put']['parameters']['path'];
+type ActivityPutRequestPathDto =
+  paths['/activities/{id}']['put']['parameters']['path'];
 
 type ActivityPutRequestBodyDto =
   paths['/activities/{id}']['put']['requestBody']['content']['application/json'];
@@ -81,6 +82,24 @@ type ActivityGetByIdPathDto =
 type ActivityGetById200ResponseDto =
   paths['/activities/{id}']['get']['responses']['200']['content']['application/json'];
 
+type ActivityGetByStudentIdPathDto =
+  paths['/students/{id}/activities']['get']['parameters']['path'];
+
+type ActivityGetByStudentId200ResponseDto =
+  paths['/students/{id}/activities']['get']['responses']['200']['content']['application/json'];
+
+type AchievementGetByStudentActivityIdPathDto =
+  paths['/students/{id}/activities/{activityId}/achievements']['get']['parameters']['path'];
+
+type AchievementGetByStudentActivityId200ResponseDto =
+  paths['/students/{id}/activities/{activityId}/achievements']['get']['responses']['200']['content']['application/json'];
+
+type AchievementPostRequestBodyDto =
+  paths['/achievements']['post']['requestBody']['content']['application/json'];;
+
+type AchievementPost201ResponseDto =
+  paths['/achievements']['post']['responses']['201']['content']['application/json'];
+
 type SimpleUserDto = components['schemas']['SimpleUser'];
 type UserDto = components['schemas']['User'];
 type UserRoleDto = components['schemas']['UserRole'];
@@ -93,6 +112,9 @@ type AchievementSubmissionRoleDto =
 type ActivityPayloadDto = components['schemas']['ActivityPayload'];
 type ActivityDto = components['schemas']['Activity'];
 type ActivityDetailDto = components['schemas']['ActivityDetail'];
+type AchievementDto = components['schemas']['Achievement'];
+type AchievementCreationDto = components['schemas']['AchievementCreation'];
+type AchievementStatusDto = components['schemas']['AchievementStatus'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -142,6 +164,12 @@ export {
   ActivityPutRequestPathDto,
   ActivityPutRequestBodyDto,
   ActivityPut200ResponseDto,
+  ActivityGetByStudentIdPathDto,
+  ActivityGetByStudentId200ResponseDto,
+  AchievementGetByStudentActivityIdPathDto,
+  AchievementGetByStudentActivityId200ResponseDto,
+  AchievementPostRequestBodyDto,
+  AchievementPost201ResponseDto,
   BadRequestErrorDto,
   NotFoundErrorDto,
   UnauthorizedErrorDto,
@@ -157,4 +185,7 @@ export {
   ActivityPayloadDto,
   ActivityDto,
   ActivityDetailDto,
+  AchievementDto,
+  AchievementCreationDto,
+  AchievementStatusDto
 };

@@ -9,7 +9,9 @@ import {
   ActivityPayload,
   FindActivityResult,
   OrderByDirection,
+  AchievementSubmissionRole,
 } from '../__generated__/linkedup-backend-client';
+import { dto2Entity as submissionRoleDto2Entity } from '../mapper/achievement-submission-role-mapper';
 import { dto2Entity as activityStatusDto2Entity } from '../mapper/activity-status-mapper';
 import { callRepo } from './repo-util';
 
@@ -21,11 +23,12 @@ type FindActivityParams = {
   endDateFrom?: Date;
   endDateTo?: Date;
   participantGrade?: number[];
-  status?: ActivityStatus[]; // classId and studentNumber
+  role?: AchievementSubmissionRole[];
+  status?: ActivityStatus[];
   offset: number;
   limit: number;
-  orderByField: 'Name' | 'StartDate' | 'EndDate',
-  orderByDirection: OrderByDirection
+  orderByField: 'Name' | 'StartDate' | 'EndDate';
+  orderByDirection: OrderByDirection;
 };
 
 export const findActivity = async (
@@ -38,6 +41,7 @@ export const findActivity = async (
     endDateFrom,
     endDateTo,
     status,
+    role,
     ...rest
   } = args;
   const query = {
@@ -46,6 +50,7 @@ export const findActivity = async (
     startDateTo: startDateTo ? startDateTo.toISOString() : undefined,
     endDateFrom: endDateFrom ? endDateFrom.toISOString() : undefined,
     endDateTo: endDateTo ? endDateTo.toISOString() : undefined,
+    role: role ? role.map((r) => submissionRoleDto2Entity(r)) : undefined,
     status: status ? status.map((s) => activityStatusDto2Entity(s)) : undefined,
   };
   return await callRepo(() => findActivityRepo({ query }), authorizationToken);

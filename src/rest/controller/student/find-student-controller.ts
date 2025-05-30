@@ -26,6 +26,7 @@ export const findStudent = async (
       ? safeParseInt(classIdStudentNumber.substring(2).split('-').pop() ?? '')
       : undefined;
     const name = req.query?.name;
+
     const matchedStudents = (
       await findStudentEntity(ids, classId, name, jwt)
     ).filter(
@@ -36,7 +37,7 @@ export const findStudent = async (
       .status(200)
       .json(
         (matchedStudents ?? [])
-          .filter((s): s is StudentDto => s !== undefined)
+          .filter((s) => s !== undefined)
           .map((s) => studentEntity2Dto(s))
       );
   } catch (error: any) {

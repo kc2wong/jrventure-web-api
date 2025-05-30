@@ -21,7 +21,7 @@ export const userAuthenticationPost = async (
         ? (
             await findUserRepo(
               { studentId: result.user.entitledStudentId[0] },
-              undefined
+              token
             )
           )
             .filter((u) => u.role === 'Parent')
