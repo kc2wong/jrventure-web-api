@@ -13,5 +13,5 @@ export const entity2Dto = (
 export const dto2Entity = (
   src: AchievementStatusDto
 ): AchievementStatusEntity | AchievementApprovalStatusEntity => {
-  return src;
+  return src === 'New' ? 'Pending' : src;
 };

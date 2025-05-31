@@ -9,8 +9,9 @@ import {
   OrderByDirection,
 } from '../../../__generated__/linkedup-backend-client';
 import { findAchievementApprovalRepo } from '../../../repo/achievement-approval-repo';
-import { findAchievementRepo } from '../../../repo/achievement-repo';
-import { entity2Dto } from '../../../mapper/achievement-mapper';
+import { findAchievementRepo, getAchievementApprovalByIdRepo } from '../../../repo/achievement-repo';
+import { approvalDetailEntity2Dto, entity2Dto } from '../../../mapper/achievement-mapper';
+import { getCreatedUpdatedBy } from '../user-enrichment';
 
 export const findAchievementByStudentActivityId = async (
   req: Request<AchievementGetByStudentActivityIdPathDto, {}, {}, {}>,
@@ -33,10 +34,6 @@ export const findAchievementByStudentActivityId = async (
       limit: 1, // should have 0 or 1 record only
       orderByDirection: 'Ascending' as OrderByDirection,
     };
-    // const [studentAchievement, studentAchievementApproval] = await Promise.all([
-    //   findAchievementRepo(queryParam, res.locals.jwt).then((res) => res.data),
-    //   findAchievementApprovalRepo(queryParam, res.locals.jwt).then((res) => res.data),
-    // ]);
 
     const newAchievementDto: AchievementDto = {
       id: '-1',
@@ -44,7 +41,7 @@ export const findAchievementByStudentActivityId = async (
       activityId: activityId,
       submissionRole: role === 'Teacher' ? 'Teacher' : 'Student',
       comment: '',
-      status: 'Pending',
+      status: 'New',
     };
 
     // Return pending record first if user does not have approval right.
@@ -52,11 +49,16 @@ export const findAchievementByStudentActivityId = async (
     const studentAchievementApproval = withApprovalRight ? [] : (
       await findAchievementApprovalRepo(queryParam, res.locals.jwt)
     ).data;
-    const achievementApprovalDto =
+    const achievementApproval =
       studentAchievementApproval.length === 1
-        ? entity2Dto(studentAchievementApproval[0])
+        ? studentAchievementApproval[0]
         : undefined;
-    if (achievementApprovalDto) {
+
+    if (achievementApproval) {
+      const achievementApprovalDetail = await getAchievementApprovalByIdRepo(achievementApproval.id);
+      const simpleUserMap = await getCreatedUpdatedBy(achievementApprovalDetail.review ?? []);
+      const achievementApprovalDto = approvalDetailEntity2Dto(achievementApprovalDetail, simpleUserMap);
+
       res.status(200).json(achievementApprovalDto);
       return;
     }

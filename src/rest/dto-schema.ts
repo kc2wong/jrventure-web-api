@@ -115,6 +115,7 @@ type ActivityDetailDto = components['schemas']['ActivityDetail'];
 type AchievementDto = components['schemas']['Achievement'];
 type AchievementCreationDto = components['schemas']['AchievementCreation'];
 type AchievementStatusDto = components['schemas']['AchievementStatus'];
+type AchievementApprovalReviewDto = components['schemas']['AchievementApprovalReview'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -187,5 +188,6 @@ export {
   ActivityDetailDto,
   AchievementDto,
   AchievementCreationDto,
+  AchievementApprovalReviewDto,
   AchievementStatusDto
 };

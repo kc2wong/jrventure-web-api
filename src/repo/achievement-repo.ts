@@ -2,12 +2,14 @@ import {
   createAchievement as createAchievementApi,
   updateAchievement as updateAchievementApi,
   findAchievement as findAchievementApi,
+  getAchievementApprovalById as getAchievementApprovalByIdApi,
   AchievementCreation,
   Achievement,
   AchievementApproval,
   AchievementSubmissionRole,
   OrderByDirection,
   FindAchievementResult,
+  AchievementApprovalDetail,
 } from '../__generated__/linkedup-backend-client';
 import { dto2Entity as submissionRoleDto2Entity } from '../mapper/achievement-submission-role-mapper';
 import { callRepo } from './repo-util';
@@ -34,6 +36,16 @@ export const findAchievementRepo = async (
   };
   return await callRepo(
     () => findAchievementApi({ query }),
+    authorizationToken
+  );
+};
+
+export const getAchievementApprovalByIdRepo = async (
+  id: string,
+  authorizationToken?: string
+): Promise<AchievementApprovalDetail> => {
+  return await callRepo(
+    () => getAchievementApprovalByIdApi({ path: { id } }),
     authorizationToken
   );
 };

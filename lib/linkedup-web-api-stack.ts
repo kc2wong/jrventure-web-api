@@ -19,6 +19,7 @@ export class LinkedupWebApiStack extends Stack {
           PORT: '3000', // not really needed, but some ORMs require PORT
           BACKEND_API_URL: process.env.BACKEND_API_URL!,
           CORS_ORIGIN: process.env.CORS_ORIGIN!,
+          PERSPECTIVE_API_KEY: process.env.PERSPECTIVE_API_KEY!,
         },
       }
     );
