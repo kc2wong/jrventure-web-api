@@ -5,7 +5,10 @@ import {
 import { callRepo } from './repo-util';
 
 export const listActivityCategory = async (
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<ActivityCategory[]> => {
-  return await callRepo(() => listActivityCategoryRepo(), authorizationToken);
+  return await callRepo(
+    (headers) => listActivityCategoryRepo(headers),
+    authorizationToken
+  );
 };

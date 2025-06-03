@@ -6,16 +6,16 @@ client.setConfig({
 });
 
 export const callRepo = async <T>(
-  repoCall: () => Promise<{ data?: T; error?: any; status?: number }>,
+  repoCall: (
+    headers?: Record<string, string>
+  ) => Promise<{ data?: T; error?: any; status?: number }>,
   authorizationToken?: string
 ): Promise<T> => {
-  if (authorizationToken) {
-    client.instance.interceptors.request.use((config) => {
-      config.headers.set('Authorization', `Bearer ${authorizationToken}`);
-      return config;
-    });
-  }
-  const { data, error, status } = await repoCall();
+  const { data, error, status } = authorizationToken
+    ? await repoCall({
+        Authorization: `Bearer ${authorizationToken}`,
+      })
+    : await repoCall();
   if (error) {
     throw createSystemError(error, status);
   }

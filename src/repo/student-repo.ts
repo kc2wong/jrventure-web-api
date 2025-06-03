@@ -6,11 +6,12 @@ import { callRepo } from './repo-util';
 
 export const getStudentById = async (
   id: string,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<Student | undefined> => {
   const result = await callRepo(
-    () =>
+    (headers) =>
       findStudentRepo({
+        headers,
         query: { id: [id] },
       }),
     authorizationToken
@@ -19,16 +20,14 @@ export const getStudentById = async (
 };
 
 export const findStudent = async (
+  authorizationToken: string,
   ids?: string[],
   classId?: string,
-  name?: string,
-  authorizationToken?: string
+  name?: string
 ): Promise<Student[]> => {
   return await callRepo(
-    () =>
-      findStudentRepo({
-        query: { id: ids, classId, name },
-      }),
+    (headers) =>
+      findStudentRepo({ headers, query: { id: ids, classId, name } }),
     authorizationToken
   );
 };

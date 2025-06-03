@@ -13,11 +13,11 @@ export const createActivity = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
+    const jwt = res.locals.jwt;
     const payload = payloadDto2Entity(req.body);
 
     const newActivity = await createActivityRepo(payload, jwt);
-    const createdUpdatedByMap = await getCreatedUpdatedBy([newActivity]);
+    const createdUpdatedByMap = await getCreatedUpdatedBy(jwt, [newActivity]);
 
     const activityDto = entity2DetailDto(
       newActivity,

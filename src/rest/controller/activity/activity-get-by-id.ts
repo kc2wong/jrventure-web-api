@@ -15,10 +15,10 @@ export const getActivityById = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
+    const jwt = res.locals.jwt;
 
     const activity = await getActivityByIdRepo(req.params.id, jwt);
-    const createdUpdatedByMap = await getCreatedUpdatedBy([activity]);
+    const createdUpdatedByMap = await getCreatedUpdatedBy(jwt, [activity]);
 
 res
   .status(200)

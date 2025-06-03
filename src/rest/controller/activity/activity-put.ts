@@ -14,7 +14,7 @@ export const updateActivity = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
+    const jwt = res.locals.jwt;
     const { version, ...rest } = req.body;
     const payload = payloadDto2Entity(rest);
 
@@ -24,7 +24,7 @@ export const updateActivity = async (
       payload,
       jwt
     );
-    const createdUpdatedByMap = await getCreatedUpdatedBy([updatedActivity]);
+    const createdUpdatedByMap = await getCreatedUpdatedBy(jwt, [updatedActivity]);
 
     const activityDto = entity2DetailDto(
       updatedActivity,

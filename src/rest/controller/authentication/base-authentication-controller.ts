@@ -39,16 +39,9 @@ const systemUser: SimpleUserDto = {
   name: { English: 'Administrator' },
 };
 
-const tempUser = {
-  id: '1',
-  withApprovalRight: true,
-  entitledStudentId: [],
-  role: 'Admin',
-};
-
 const getEntitledStudents = async (
-  entitledStudentIds?: string[],
-  authorizationToken?: string
+  authorizationToken: string,
+  entitledStudentIds?: string[]
 ) => {
   if (!entitledStudentIds) return [];
   const students = await Promise.all(
@@ -73,12 +66,12 @@ const generateSystemUserToken = () => {
 
 export const generateAuthResponse = async (
   userEntity: User,
-  authorizationToken?: string
+  // authorizationToken?: string
 ) => {
   const tempToken = generateSystemUserToken();
   const entitledStudents = await getEntitledStudents(
+    tempToken,
     userEntity.entitledStudentId,
-    tempToken
   );
   const payload = {
     user: userEntity2Dto(userEntity, entitledStudents, systemUser, systemUser),

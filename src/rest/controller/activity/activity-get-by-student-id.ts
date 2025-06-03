@@ -17,9 +17,10 @@ export const findActivityByStudentId = async (
   next: NextFunction
 ) => {
   try {
+    const jwt = res.locals.jwt;
     const studentId = req.params.id;
 
-    const student = await getStudentByIdRepo(studentId);
+    const student = await getStudentByIdRepo(studentId, jwt);
     if (student === undefined) {
       console.log(`Student with ID ${studentId} not found`);
       res.status(200).json([]);
@@ -27,7 +28,6 @@ export const findActivityByStudentId = async (
     }
 
     const gradeNumber = parseInt(student.classId.replace(/[A-Za-z]/g, ''), 10);
-    const jwt = res.locals.jwt;
     const role = res.locals.authenticatedUser?.role;
 
     if (role !== 'Teacher' && role !== 'Student' && role !== 'Parent') {
@@ -67,8 +67,8 @@ export const findActivityByStudentId = async (
         orderByDirection: 'Ascending' as OrderByDirection,
     }
     const [studentAchievement, studentAchievementApproval] = await Promise.all([
-      findAchievementRepo(queryParam).then((res) => res.data),
-      findAchievementApprovalRepo(queryParam).then((res) => res.data),
+      findAchievementRepo(queryParam, jwt).then((res) => res.data),
+      findAchievementApprovalRepo(queryParam, jwt).then((res) => res.data),
     ]);
 
     const achievementStatusMap = new Map(

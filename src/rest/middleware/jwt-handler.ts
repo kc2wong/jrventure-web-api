@@ -7,7 +7,6 @@ export const jwtHandler = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  // const jwt = req.headers.authorization;
   const jwt = req.cookies.jwt;
   if (jwt) {
     const payload = jsonwebtoken.verify(jwt, 'secret') as any;

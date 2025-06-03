@@ -10,6 +10,7 @@ import {
   OrderByDirection,
   FindAchievementResult,
   AchievementApprovalDetail,
+  AchievementAttachmentCreation,
 } from '../__generated__/linkedup-backend-client';
 import { dto2Entity as submissionRoleDto2Entity } from '../mapper/achievement-submission-role-mapper';
 import { callRepo } from './repo-util';
@@ -26,7 +27,7 @@ type FindAchievementParams = {
 
 export const findAchievementRepo = async (
   args: FindAchievementParams,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<FindAchievementResult> => {
   const { createDateFrom, role, ...rest } = args;
   const query = {
@@ -35,30 +36,32 @@ export const findAchievementRepo = async (
     role: role ? submissionRoleDto2Entity(role) : undefined,
   };
   return await callRepo(
-    () => findAchievementApi({ query }),
+    (headers) =>
+      findAchievementApi({
+        headers,
+        query,
+      }),
     authorizationToken
   );
 };
 
 export const getAchievementApprovalByIdRepo = async (
   id: string,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<AchievementApprovalDetail> => {
   return await callRepo(
-    () => getAchievementApprovalByIdApi({ path: { id } }),
+    (headers) => getAchievementApprovalByIdApi({ headers, path: { id } }),
     authorizationToken
   );
 };
 
 export const createAchievement = async (
+  authorizationToken: string,
   payload: AchievementCreation,
-  authorizationToken?: string
+  attachment: AchievementAttachmentCreation[],
 ): Promise<Achievement | AchievementApproval> => {
   return await callRepo(
-    () =>
-      createAchievementApi({
-        body: payload,
-      }),
+    (headers) => createAchievementApi({ headers, body: { ...payload, attachment } }),
     authorizationToken
   );
 };
@@ -67,11 +70,12 @@ export const updateAchievement = async (
   id: string,
   version: number,
   payload: AchievementCreation,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<Achievement> => {
   return await callRepo(
-    () =>
+    (headers) =>
       updateAchievementApi({
+        headers,
         path: { id },
         body: { ...payload, version },
       }),

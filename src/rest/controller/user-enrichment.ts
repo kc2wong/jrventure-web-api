@@ -1,4 +1,8 @@
-import { AuditControl, Student, User } from '../../__generated__/linkedup-backend-client';
+import {
+  AuditControl,
+  Student,
+  User,
+} from '../../__generated__/linkedup-backend-client';
 import { findStudent as findStudentRepo } from '../../repo/student-repo';
 import { findUser as findUserRepo } from '../../repo/user-repo';
 import { SimpleUserDto } from '../dto-schema';
@@ -10,8 +14,8 @@ const unknownUser: SimpleUserDto = {
 };
 
 export const getStudents = async (
-  users: User[],
-  authorizationToken?: string
+  authorizationToken: string,
+  users: User[]
 ): Promise<Map<string, Student>> => {
   const studentIds = Array.from(
     new Set(users.flatMap((u) => u.entitledStudentId))
@@ -19,13 +23,14 @@ export const getStudents = async (
 
   const students =
     studentIds.length > 0
-      ? await findStudentRepo(studentIds, authorizationToken)
+      ? await findStudentRepo(authorizationToken, studentIds)
       : [];
   // Convert students array into a Map for fast lookup
   return new Map(students.map((s) => [s.id, s]));
 };
 
 export const getCreatedUpdatedBy = async (
+  authorizationToken: string,
   auditControl: AuditControl[]
 ): Promise<Map<string, SimpleUserDto>> => {
   const userIds = [
@@ -34,9 +39,12 @@ export const getCreatedUpdatedBy = async (
       ...auditControl.map((u) => u.updatedBy),
     ]),
   ];
-  const createdUpdatedBy = await findUserRepo({
-    id: userIds,
-  });
+  const createdUpdatedBy = await findUserRepo(
+    {
+      id: userIds,
+    },
+    authorizationToken
+  );
   const userMap = new Map(
     createdUpdatedBy.map(({ id, name, email }) => [id, { id, name, email }])
   );

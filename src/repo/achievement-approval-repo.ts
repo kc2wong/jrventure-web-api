@@ -19,7 +19,7 @@ type FindAchievementApprovalParams = {
 
 export const findAchievementApprovalRepo = async (
   args: FindAchievementApprovalParams,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<FindAchievementApprovalResult> => {
   const {
     createDateFrom,
@@ -31,15 +31,6 @@ export const findAchievementApprovalRepo = async (
     createDateFrom: createDateFrom ? createDateFrom.toISOString() : undefined,
     role: role ? submissionRoleDto2Entity(role) : undefined,
   };
-  return await callRepo(() => findAchievementApprovalApi({ query }), authorizationToken);
+  return await callRepo((headers) => findAchievementApprovalApi({ headers, query }), authorizationToken);
 };
 
-// export const getActivityById = async (
-//   id: string,
-//   authorizationToken?: string
-// ): Promise<Activity> => {
-//   return await callRepo(
-//     () => getActivityByIdRepo({ path: { id } }),
-//     authorizationToken
-//   );
-// };

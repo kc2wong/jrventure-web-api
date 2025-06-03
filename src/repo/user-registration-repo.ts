@@ -7,13 +7,10 @@ import { callRepo } from './repo-util';
 
 export const registerUser = async (
   userRegistration: UserRegistration,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<User> => {
   return await callRepo(
-    () =>
-      createUser({
-        body: userRegistration,
-      }),
+    (headers) => createUser({ headers, body: userRegistration }),
     authorizationToken
   );
 };

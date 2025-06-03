@@ -1,8 +1,10 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 
 export class LinkedupWebApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -33,6 +35,30 @@ export class LinkedupWebApiStack extends Stack {
         allowMethods: ['OPTIONS', 'POST'],
         allowCredentials: true,
       },
+    });
+
+    new s3.Bucket(this, 'JrVentureMediaUploadBucket', {
+      bucketName: 'jr-venture-media-upload-bucket',
+      lifecycleRules: [
+        {
+          expiration: Duration.hours(1),
+          enabled: true,
+        },
+      ],
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: RemovalPolicy.DESTROY, // For dev/test only
+      autoDeleteObjects: true, // Needs permissions for destroy
+      cors: [
+        {
+          allowedMethods: [HttpMethods.PUT, HttpMethods.POST, HttpMethods.GET, HttpMethods.DELETE, HttpMethods.HEAD],
+          allowedOrigins: [
+            'http://localhost:3000',
+            process.env.CORS_ORIGIN!,
+          ],
+          allowedHeaders: ['*'],
+          exposedHeaders: ['ETag'],
+        },
+      ],      
     });
   }
 }

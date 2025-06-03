@@ -39,7 +39,7 @@ export const updateUser = async (
       jwt
     );
 
-    const studentMap = await getStudents([updatedUser], jwt);
+    const studentMap = await getStudents(jwt, [updatedUser]);
 
     const userDto = entity2Dto(
       updatedUser,

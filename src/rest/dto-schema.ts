@@ -95,10 +95,16 @@ type AchievementGetByStudentActivityId200ResponseDto =
   paths['/students/{id}/activities/{activityId}/achievements']['get']['responses']['200']['content']['application/json'];
 
 type AchievementPostRequestBodyDto =
-  paths['/achievements']['post']['requestBody']['content']['application/json'];;
+  paths['/achievements']['post']['requestBody']['content']['application/json'];
 
 type AchievementPost201ResponseDto =
   paths['/achievements']['post']['responses']['201']['content']['application/json'];
+
+type PresignedUrlPostRequestBodyDto =
+  paths['/media/presigned-urls']['post']['requestBody']['content']['application/json'];
+
+type PresignedUrlPost200ResponseDto =
+  paths['/media/presigned-urls']['post']['responses']['200']['content']['application/json'];
 
 type SimpleUserDto = components['schemas']['SimpleUser'];
 type UserDto = components['schemas']['User'];
@@ -115,7 +121,12 @@ type ActivityDetailDto = components['schemas']['ActivityDetail'];
 type AchievementDto = components['schemas']['Achievement'];
 type AchievementCreationDto = components['schemas']['AchievementCreation'];
 type AchievementStatusDto = components['schemas']['AchievementStatus'];
-type AchievementApprovalReviewDto = components['schemas']['AchievementApprovalReview'];
+type AchievementApprovalReviewDto =
+  components['schemas']['AchievementApprovalReview'];
+type AchievementAttachmentCreationDto =
+  components['schemas']['AchievementAttachmentCreation'];
+type AchievementAttachmentDto =
+  components['schemas']['AchievementAttachment'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -171,6 +182,8 @@ export {
   AchievementGetByStudentActivityId200ResponseDto,
   AchievementPostRequestBodyDto,
   AchievementPost201ResponseDto,
+  PresignedUrlPostRequestBodyDto,
+  PresignedUrlPost200ResponseDto,
   BadRequestErrorDto,
   NotFoundErrorDto,
   UnauthorizedErrorDto,
@@ -189,5 +202,7 @@ export {
   AchievementDto,
   AchievementCreationDto,
   AchievementApprovalReviewDto,
-  AchievementStatusDto
+  AchievementAttachmentCreationDto,
+  AchievementAttachmentDto,
+  AchievementStatusDto,
 };

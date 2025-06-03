@@ -19,6 +19,7 @@ export const findAchievementByStudentActivityId = async (
   next: NextFunction
 ) => {
   try {
+    const jwt = res.locals.jwt;
     const studentId = req.params.id;
     const activityId = req.params.activityId;
     const role = res.locals.authenticatedUser?.role;
@@ -42,6 +43,7 @@ export const findAchievementByStudentActivityId = async (
       submissionRole: role === 'Teacher' ? 'Teacher' : 'Student',
       comment: '',
       status: 'New',
+      attachment: []
     };
 
     // Return pending record first if user does not have approval right.
@@ -55,8 +57,8 @@ export const findAchievementByStudentActivityId = async (
         : undefined;
 
     if (achievementApproval) {
-      const achievementApprovalDetail = await getAchievementApprovalByIdRepo(achievementApproval.id);
-      const simpleUserMap = await getCreatedUpdatedBy(achievementApprovalDetail.review ?? []);
+      const achievementApprovalDetail = await getAchievementApprovalByIdRepo(achievementApproval.id, jwt);
+      const simpleUserMap = await getCreatedUpdatedBy(jwt, achievementApprovalDetail.review ?? []);
       const achievementApprovalDto = approvalDetailEntity2Dto(achievementApprovalDetail, simpleUserMap);
 
       res.status(200).json(achievementApprovalDto);

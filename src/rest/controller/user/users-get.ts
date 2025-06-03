@@ -18,7 +18,7 @@ export const findUser = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
+    const jwt = res.locals.jwt;
     const email = req.query?.email;
     const name = req.query?.name;
     const studentId = req.query?.studentId;
@@ -36,8 +36,8 @@ export const findUser = async (
       jwt
     );
 
-    const createdUpdatedByMap = await getCreatedUpdatedBy(result);
-    const studentMap = await getStudents(result);
+    const createdUpdatedByMap = await getCreatedUpdatedBy(jwt, result);
+    const studentMap = await getStudents(jwt, result);
     res.status(200).json(
       result.map((u) =>
         entity2Dto(

@@ -12,6 +12,7 @@ import studentRouter from './rest/route/student-end-point';
 import activityCategoryRouter from './rest/route/activity-category-end-point';
 import activityRouter from './rest/route/activity-end-point';
 import achievementRouter from './rest/route/achievement-end-point';
+import mediaRouter from './rest/route/media-end-point';
 import { errorHandler } from './rest/middleware/error-handler';
 import cookieParser from 'cookie-parser';
 import { jwtHandler } from './rest/middleware/jwt-handler';
@@ -46,6 +47,7 @@ app.use('/students', studentRouter);
 app.use('/activity-categories', activityCategoryRouter);
 app.use('/activities', activityRouter);
 app.use('/achievements', achievementRouter);
+app.use('/media', mediaRouter);
 app.use(errorHandler); // Global error handler
 
 export default app;

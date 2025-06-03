@@ -9,20 +9,19 @@ export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<AuthenticationResponse> => {
-  
-  return await callRepo(() =>
-    authenticateUserRepo({
-      body: { email, password },
-    })
+  return await callRepo(
+    (headers) => authenticateUserRepo({ headers, body: { email, password } }),
   );
 };
 
 export const googleAuthenticate = async (
   accessToken: string
 ): Promise<AuthenticationResponse> => {
-  return await callRepo(() =>
-    authenticateGoogleUserRepo({
-      body: { accessToken },
-    })
+  return await callRepo(
+    (headers) =>
+      authenticateGoogleUserRepo({
+        headers,
+        body: { accessToken },
+      }),
   );
 };

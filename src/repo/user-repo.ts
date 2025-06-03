@@ -21,11 +21,12 @@ interface FindUserParams {
 
 export const findUser = async (
   { id, email, name, studentId, role, status }: FindUserParams,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<User[]> => {
   return await callRepo(
-    () =>
+    (headers) =>
       findUserRepo({
+        headers,
         query: {
           id,
           email,
@@ -41,13 +42,10 @@ export const findUser = async (
 
 export const createUser = async (
   userCreation: UserCreation,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<User> => {
   return await callRepo(
-    () =>
-      createUserRepo({
-        body: userCreation,
-      }),
+    (headers) => createUserRepo({ headers, body: userCreation }),
     authorizationToken
   );
 };
@@ -56,11 +54,12 @@ export const updateUser = async (
   userId: string,
   version: number,
   userUpdate: UserCreation,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<User> => {
   return await callRepo(
-    () =>
+    (headers) =>
       updateUserRepo({
+        headers,
         path: { id: userId },
         body: { ...userUpdate, version },
       }),

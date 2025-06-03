@@ -10,6 +10,7 @@ import {
   SimpleUserDto,
 } from '../rest/dto-schema';
 import { entity2Dto as achievementApprovalReviewEntity2Dto } from './achievement-approval-review-mapper';
+import { entity2Dto as achievementApprovalAttachmentEntity2Dto } from './achievement-approval-attachment-mapper';
 import { entity2Dto as achievementStatusEntity2Dto } from './achievement-status-mapper';
 import { entity2Dto as achievementSubmissionRoleEntity2Dto } from './achievement-submission-role-mapper';
 
@@ -21,11 +22,12 @@ export const entity2Dto = (
     ...rest,
     submissionRole: achievementSubmissionRoleEntity2Dto(submissionRole),
     status: achievementStatusEntity2Dto(status),
+    attachment: [],
   };
 };
 
 export const creationDto2Entity = (
-  src: AchievementCreationDto
+  src: AchievementCreationDto,
 ): AchievementCreationEntity => {
   const { activityId, studentId, rating, comment } = src;
   return {
@@ -40,7 +42,7 @@ export const approvalDetailEntity2Dto = (
   src: AchievementApprovalDetailEntity,
   simpleUserMap: Map<string, SimpleUserDto>
 ): AchievementDto => {
-  const { status, submissionRole, review, ...rest } = src;
+  const { status, submissionRole, attachment, review, ...rest } = src;
   return {
     ...rest,
     submissionRole: achievementSubmissionRoleEntity2Dto(submissionRole),
@@ -51,6 +53,9 @@ export const approvalDetailEntity2Dto = (
         simpleUserMap.get(r.createdBy)!,
         simpleUserMap.get(r.updatedAt)!
       )
+    ),
+    attachment: attachment.map((atch) =>
+      achievementApprovalAttachmentEntity2Dto(atch)
     ),
   };
 };

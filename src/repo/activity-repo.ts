@@ -33,7 +33,7 @@ type FindActivityParams = {
 
 export const findActivity = async (
   args: FindActivityParams,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<FindActivityResult> => {
   const {
     startDateFrom,
@@ -53,28 +53,28 @@ export const findActivity = async (
     role: role ? role.map((r) => submissionRoleDto2Entity(r)) : undefined,
     status: status ? status.map((s) => activityStatusDto2Entity(s)) : undefined,
   };
-  return await callRepo(() => findActivityRepo({ query }), authorizationToken);
+  return await callRepo(
+    (headers) => findActivityRepo({ headers, query }),
+    authorizationToken
+  );
 };
 
 export const getActivityById = async (
   id: string,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<Activity> => {
   return await callRepo(
-    () => getActivityByIdRepo({ path: { id } }),
+    (headers) => getActivityByIdRepo({ headers, path: { id } }),
     authorizationToken
   );
 };
 
 export const createActivity = async (
   payload: ActivityPayload,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<Activity> => {
   return await callRepo(
-    () =>
-      createActivityRepo({
-        body: payload,
-      }),
+    (headers) => createActivityRepo({ headers, body: payload }),
     authorizationToken
   );
 };
@@ -83,11 +83,12 @@ export const updateActivity = async (
   activityId: string,
   version: number,
   payload: ActivityPayload,
-  authorizationToken?: string
+  authorizationToken: string
 ): Promise<Activity> => {
   return await callRepo(
-    () =>
+    (headers) =>
       updateActivityRepo({
+        headers,
         path: { id: activityId },
         body: { ...payload, version },
       }),

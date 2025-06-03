@@ -73,7 +73,7 @@ export const createUser = async (
           jwt
         );
 
-    const studentMap = await getStudents([newUser], jwt);
+    const studentMap = await getStudents(jwt, [newUser]);
 
     const userDto = entity2Dto(
       newUser,

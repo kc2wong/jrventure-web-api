@@ -52,10 +52,10 @@ export const getStudentById = async (
 
 const findStudentById = async (
   id: string,
-  authorizationToken ?: string
+  authorizationToken: string
 ): Promise<Student | undefined> => {
   try {
-    const result = await findStudentEntity([id], authorizationToken);
+    const result = await findStudentEntity(authorizationToken, [id]);
     return result.length === 1 ? result[0] : undefined;
   } catch (error: any) {
     throw error;
@@ -64,14 +64,14 @@ const findStudentById = async (
 
 const findStudentByClassIdStudentNumber = async (
   classIdStudentNumber: string,
-  authorizationToken ?: string
+  authorizationToken: string
 ): Promise<Student | undefined> => {
   try {
     const classId = classIdStudentNumber.substring(0, 2);
     const studentNumber = safeParseInt(
       classIdStudentNumber.substring(2).split('-').pop() ?? ''
     );
-    const result = (await findStudentEntity(undefined, classId, undefined, authorizationToken)).filter(
+    const result = (await findStudentEntity(authorizationToken, undefined, classId, undefined)).filter(
       (s) => s.studentNumber == studentNumber
     );
     return result.length === 1 ? result[0] : undefined;

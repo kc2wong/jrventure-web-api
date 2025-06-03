@@ -21,7 +21,7 @@ export const registerUser = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
+    const jwt = res.locals.jwt;
     const { studentId, studentName, accessToken } = req.body;
     const newUser = await registerUserRepo(
       {
@@ -32,7 +32,7 @@ export const registerUser = async (
       jwt
     );
 
-    const studentMap = await getStudents([newUser]);
+    const studentMap = await getStudents(jwt, [newUser]);
 
     const userDto = entity2Dto(
       newUser,
