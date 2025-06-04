@@ -9,8 +9,7 @@ export const listActivityCategory = async (
   next: NextFunction
 ) => {
   try {
-    const jwt = req.cookies.jwt;
-
+    const jwt = res.locals.jwt;
     const result = await listActivityCategoryRepo(jwt);
     res.status(200).json(result.map((u) => entity2Dto(u)));
   } catch (error: any) {

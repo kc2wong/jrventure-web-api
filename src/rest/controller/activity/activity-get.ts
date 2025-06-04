@@ -14,7 +14,7 @@ export const findActivity = async (
 ) => {
   try {
 
-    const jwt = req.cookies.jwt;
+    const jwt = res.locals.jwt;
     const categoryCode = req.query?.categoryCode;
     const name = req.query?.name;
     const startDateFrom = req.query?.startDateFrom;

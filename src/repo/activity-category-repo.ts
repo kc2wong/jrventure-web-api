@@ -7,8 +7,7 @@ import { callRepo } from './repo-util';
 export const listActivityCategory = async (
   authorizationToken: string
 ): Promise<ActivityCategory[]> => {
-  return await callRepo(
-    (headers) => listActivityCategoryRepo(headers),
-    authorizationToken
-  );
+  return await callRepo((headers) => {
+    return listActivityCategoryRepo({headers});
+  }, authorizationToken);
 };
