@@ -15,10 +15,8 @@ export const creationDto2Entity = ({
 }: AchievementAttachmentCreationDto): AchievementAttachmentCreationEntity => {
   return {
     fileName,
-    objectKey:
-      objectKey.indexOf('/') === -1
-        ? `${uploadBucketName}/${objectKey}`
-        : objectKey,
+    bucketName: objectKey.indexOf('/') === -1 ? uploadBucketName : undefined,
+    objectKey,
   };
 };
 
