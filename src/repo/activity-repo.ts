@@ -1,7 +1,7 @@
 import { off } from 'process';
 import {
-  findActivity as findActivityRepo,
-  getActivityById as getActivityByIdRepo,
+  findActivity as findActivityApi,
+  getActivityById as getActivityByIdApi,
   createActivity as createActivityRepo,
   updateActivity as updateActivityRepo,
   Activity,
@@ -16,6 +16,7 @@ import { dto2Entity as activityStatusDto2Entity } from '../mapper/activity-statu
 import { callRepo } from './repo-util';
 
 type FindActivityParams = {
+  id?: string[];
   categoryCode?: string[];
   name?: string;
   startDateFrom?: Date;
@@ -31,7 +32,7 @@ type FindActivityParams = {
   orderByDirection: OrderByDirection;
 };
 
-export const findActivity = async (
+export const findActivityRepo = async (
   args: FindActivityParams,
   authorizationToken: string
 ): Promise<FindActivityResult> => {
@@ -54,17 +55,17 @@ export const findActivity = async (
     status: status ? status.map((s) => activityStatusDto2Entity(s)) : undefined,
   };
   return await callRepo(
-    (headers) => findActivityRepo({ headers, query }),
+    (headers) => findActivityApi({ headers, query }),
     authorizationToken
   );
 };
 
-export const getActivityById = async (
+export const getActivityByIdRepo = async (
   id: string,
   authorizationToken: string
 ): Promise<Activity> => {
   return await callRepo(
-    (headers) => getActivityByIdRepo({ headers, path: { id } }),
+    (headers) => getActivityByIdApi({ headers, path: { id } }),
     authorizationToken
   );
 };

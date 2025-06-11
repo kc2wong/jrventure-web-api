@@ -5,7 +5,7 @@ import {
   NotFoundErrorDto,
 } from '../../dto-schema';
 
-import { findStudent as findStudentEntity } from '../../../repo/student-repo';
+import { findStudentRepo as findStudentEntity } from '../../../repo/student-repo';
 import { entity2Dto as studentEntity2Dto } from '../../../mapper/student-mapper';
 import { safeParseInt } from '../../../util/string-util';
 import { Student } from '../../../__generated__/linkedup-backend-client';

@@ -1,16 +1,16 @@
 import {
-  findStudent as findStudentRepo,
+  findStudent as findStudentApi,
   Student,
 } from '../__generated__/linkedup-backend-client';
 import { callRepo } from './repo-util';
 
-export const getStudentById = async (
+export const getStudentByIdRepo = async (
   id: string,
   authorizationToken: string
 ): Promise<Student | undefined> => {
   const result = await callRepo(
     (headers) =>
-      findStudentRepo({
+      findStudentApi({
         headers,
         query: { id: [id] },
       }),
@@ -19,7 +19,7 @@ export const getStudentById = async (
   return result.length === 1 ? result[0] : undefined;
 };
 
-export const findStudent = async (
+export const findStudentRepo = async (
   authorizationToken: string,
   ids?: string[],
   classId?: string,
@@ -27,7 +27,7 @@ export const findStudent = async (
 ): Promise<Student[]> => {
   return await callRepo(
     (headers) =>
-      findStudentRepo({ headers, query: { id: ids, classId, name } }),
+      findStudentApi({ headers, query: { id: ids, classId, name } }),
     authorizationToken
   );
 };

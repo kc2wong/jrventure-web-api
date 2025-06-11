@@ -4,8 +4,8 @@ import {
   ActivityGetByStudentId200ResponseDto,
   ActivityGetByStudentIdPathDto,
 } from '../../dto-schema';
-import { findActivity as findActivityRepo } from '../../../repo/activity-repo';
-import { getStudentById as getStudentByIdRepo } from '../../../repo/student-repo';
+import { findActivityRepo as findActivityRepo } from '../../../repo/activity-repo';
+import { getStudentByIdRepo as getStudentByIdRepo } from '../../../repo/student-repo';
 import { entity2Dto } from '../../../mapper/activity-mapper';
 import { findAchievementRepo } from '../../../repo/achievement-repo';
 import { findAchievementApprovalRepo } from '../../../repo/achievement-approval-repo';

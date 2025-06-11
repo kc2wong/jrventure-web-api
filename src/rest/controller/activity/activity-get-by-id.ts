@@ -4,7 +4,7 @@ import {
   ActivityGetByIdPathDto,
 } from '../../dto-schema';
 import {
-  getActivityById as getActivityByIdRepo,
+  getActivityByIdRepo as getActivityByIdRepo,
 } from '../../../repo/activity-repo';
 import { entity2DetailDto } from '../../../mapper/activity-mapper';
 import { getCreatedUpdatedBy } from '../user-enrichment';

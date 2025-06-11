@@ -3,7 +3,7 @@ import {
   ActivityGet200ResponseDto,
   ActivityGetQueryDto,
 } from '../../dto-schema';
-import { findActivity as findActivityRepo } from '../../../repo/activity-repo';
+import { findActivityRepo as findActivityRepo } from '../../../repo/activity-repo';
 import { entity2Dto } from '../../../mapper/activity-mapper';
 import { asArray } from '../../../util/array-util';
 

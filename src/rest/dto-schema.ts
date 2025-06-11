@@ -94,11 +94,32 @@ type AchievementGetByStudentActivityIdPathDto =
 type AchievementGetByStudentActivityId200ResponseDto =
   paths['/students/{id}/activities/{activityId}/achievements']['get']['responses']['200']['content']['application/json'];
 
+type AchievementApprovalGetQueryDto =
+  paths['/achievements/status/pending']['get']['parameters']['query'];
+
+type AchievementApprovalGet200ResponseDto =
+  paths['/achievements/status/pending']['get']['responses']['200']['content']['application/json'];
+
 type AchievementPostRequestBodyDto =
   paths['/achievements']['post']['requestBody']['content']['application/json'];
 
 type AchievementPost201ResponseDto =
   paths['/achievements']['post']['responses']['201']['content']['application/json'];
+
+type AchievementGetByIdPathDto =
+  paths['/achievements/{id}']['get']['parameters']['path'];
+
+type AchievementGetById200ResponseDto =
+  paths['/achievements/{id}']['get']['responses']['200']['content']['application/json'];
+
+type AchievementReviewPostPathDto =
+  paths['/achievements/{id}/review']['post']['parameters']['path'];
+
+type AchievementReviewPostBodyDto =
+  paths['/achievements/{id}/review']['post']['requestBody']['content']['application/json'];
+
+type AchievementRewviewPost201ResponseDto =
+  paths['/achievements/{id}/review']['post']['responses']['201']['content']['application/json'];
 
 type PresignedUrlPostRequestBodyDto =
   paths['/media/presigned-urls']['post']['requestBody']['content']['application/json'];
@@ -120,13 +141,14 @@ type ActivityDto = components['schemas']['Activity'];
 type ActivityDetailDto = components['schemas']['ActivityDetail'];
 type AchievementDto = components['schemas']['Achievement'];
 type AchievementCreationDto = components['schemas']['AchievementCreation'];
+type AchievementDetailDto = components['schemas']['AchievementDetail'];
 type AchievementStatusDto = components['schemas']['AchievementStatus'];
+type ApprovalCommentTypeDto = components['schemas']['ApprovalCommentType'];
 type AchievementApprovalReviewDto =
   components['schemas']['AchievementApprovalReview'];
 type AchievementAttachmentCreationDto =
   components['schemas']['AchievementAttachmentCreation'];
-type AchievementAttachmentDto =
-  components['schemas']['AchievementAttachment'];
+type AchievementAttachmentDto = components['schemas']['AchievementAttachment'];
 
 type ErrorDto = components['schemas']['Error'];
 type BadRequestErrorDto = ErrorDto & { status: 400 };
@@ -182,8 +204,15 @@ export {
   AchievementGetByStudentActivityId200ResponseDto,
   AchievementPostRequestBodyDto,
   AchievementPost201ResponseDto,
+  AchievementApprovalGetQueryDto,
+  AchievementApprovalGet200ResponseDto,
+  AchievementGetByIdPathDto,
+  AchievementGetById200ResponseDto,
   PresignedUrlPostRequestBodyDto,
   PresignedUrlPost200ResponseDto,
+  AchievementReviewPostPathDto,
+  AchievementReviewPostBodyDto,
+  AchievementRewviewPost201ResponseDto,
   BadRequestErrorDto,
   NotFoundErrorDto,
   UnauthorizedErrorDto,
@@ -205,4 +234,6 @@ export {
   AchievementAttachmentCreationDto,
   AchievementAttachmentDto,
   AchievementStatusDto,
+  AchievementDetailDto,
+  ApprovalCommentTypeDto,
 };

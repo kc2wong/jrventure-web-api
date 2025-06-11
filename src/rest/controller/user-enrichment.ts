@@ -3,7 +3,7 @@ import {
   Student,
   User,
 } from '../../__generated__/linkedup-backend-client';
-import { findStudent as findStudentRepo } from '../../repo/student-repo';
+import { findStudentRepo as findStudentRepo } from '../../repo/student-repo';
 import { findUser as findUserRepo } from '../../repo/user-repo';
 import { SimpleUserDto } from '../dto-schema';
 

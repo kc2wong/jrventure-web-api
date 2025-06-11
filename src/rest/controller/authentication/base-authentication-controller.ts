@@ -2,7 +2,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { SimpleUserDto } from '../../dto-schema';
 
 import { User } from '../../../__generated__/linkedup-backend-client';
-import { getStudentById as getStudentByIdRepo } from '../../../repo/student-repo';
+import { getStudentByIdRepo as getStudentByIdRepo } from '../../../repo/student-repo';
 import { entity2Dto as userEntity2Dto } from '../../../mapper/user-mapper';
 
 const privateKey = `
