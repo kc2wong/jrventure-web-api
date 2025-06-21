@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "declaration": true,
     "esModuleInterop": true,
     "strict": true,
@@ -21,12 +18,19 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": "./src",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@openapi/*": ["__generated__/openapi/*"],
+      "@processapi/*": ["__generated__/linkedup-backend-client/*"],
+      "@service/*": ["service/*"],
+      "@repo/*": ["repo/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@shared/*": ["shared/*"],
+      "@type/*": ["type/*"],
+      "@util/*": ["util/*"]
+    }
   },
-  "exclude": [
-    "node_modules",
-    "cdk.out"
-  ]
+  "exclude": ["node_modules", "cdk.out"]
 }

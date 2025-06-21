@@ -8,7 +8,7 @@
     "clean:full": "rimraf ./node_modules src/__generated__",
     "openapi:generate": "openapi-typescript ./resource/openapi/web-api-spec.yaml -o src/__generated__/openapi/schema.ts",
     "openapi:generate-client": "openapi-ts -i ./resource/linkedup-backend/api-spec.yaml -o src/__generated__/linkedup-backend-client -c @hey-api/client-axios --name BackendApiClient",
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/index.ts",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
@@ -28,7 +28,10 @@
     "rimraf": "^6.0.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "~5.6.3"
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "~5.6.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.821.0",

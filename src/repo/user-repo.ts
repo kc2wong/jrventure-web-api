@@ -1,12 +1,10 @@
+import { findUser, createUser, updateUser } from '@processapi/sdk.gen';
 import {
-  findUser as findUserRepo,
-  createUser as createUserRepo,
-  updateUser as updateUserRepo,
   User,
   UserCreation,
   UserRole,
   UserStatus,
-} from '../__generated__/linkedup-backend-client';
+} from '@processapi/types.gen';
 
 import { callRepo } from './repo-util';
 
@@ -19,13 +17,13 @@ interface FindUserParams {
   status?: UserStatus[];
 }
 
-export const findUser = async (
-  { id, email, name, studentId, role, status }: FindUserParams,
-  authorizationToken: string
+export const findUserRepo = async (
+  authorizationToken: string,
+  { id, email, name, studentId, role, status }: FindUserParams
 ): Promise<User[]> => {
   return await callRepo(
     (headers) =>
-      findUserRepo({
+      findUser({
         headers,
         query: {
           id,
@@ -40,25 +38,25 @@ export const findUser = async (
   );
 };
 
-export const createUser = async (
+export const createUserRepo = async (
   userCreation: UserCreation,
   authorizationToken: string
 ): Promise<User> => {
   return await callRepo(
-    (headers) => createUserRepo({ headers, body: userCreation }),
+    (headers) => createUser({ headers, body: userCreation }),
     authorizationToken
   );
 };
 
-export const updateUser = async (
+export const updateUserRepo = async (
+  authorizationToken: string,
   userId: string,
   version: number,
-  userUpdate: UserCreation,
-  authorizationToken: string
+  userUpdate: UserCreation
 ): Promise<User> => {
   return await callRepo(
     (headers) =>
-      updateUserRepo({
+      updateUser({
         headers,
         path: { id: userId },
         body: { ...userUpdate, version },

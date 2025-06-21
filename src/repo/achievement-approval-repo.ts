@@ -1,17 +1,18 @@
 import {
-  findAchievementApproval as findAchievementApprovalApi,
-  getAchievementApprovalById as getAchievementApprovalByIdApi,
-  createAchievementApprovalReview as createAchievementApprovalReviewApi,
-  approveAchievementApproval as approveAchievementApprovalApi,
   AchievementSubmissionRole,
   OrderByDirection,
   FindAchievementApprovalResult,
   AchievementApprovalStatus,
   AchievementApprovalDetail,
   AchievementDetail,
-} from '../__generated__/linkedup-backend-client';
-import { dto2Entity as submissionRoleDto2Entity } from '../mapper/achievement-submission-role-mapper';
-import { callRepo } from './repo-util';
+} from '@processapi/types.gen';
+import { callGetByIdRepo, callRepo } from './repo-util';
+import {
+  approveAchievementApproval,
+  createAchievementApprovalReview,
+  findAchievementApproval,
+  getAchievementApprovalById,
+} from '@processapi/sdk.gen';
 
 type FindAchievementApprovalParams = {
   studentId?: string;
@@ -28,36 +29,41 @@ export const findAchievementApprovalRepo = async (
   args: FindAchievementApprovalParams,
   authorizationToken: string
 ): Promise<FindAchievementApprovalResult> => {
-  const { createDateFrom, role, ...rest } = args;
+  const { createDateFrom, ...rest } = args;
   const query = {
     ...rest,
     createDateFrom: createDateFrom ? createDateFrom.toISOString() : undefined,
-    role: role ? submissionRoleDto2Entity(role) : undefined,
   };
   return await callRepo(
-    (headers) => findAchievementApprovalApi({ headers, query }),
+    (headers) => findAchievementApproval({ headers, query }),
     authorizationToken
   );
 };
 
 export const getAchievementApprovalByIdRepo = async (
+  authorizationToken: string,
   id: string,
-  authorizationToken: string
-): Promise<AchievementApprovalDetail> => {
-  return await callRepo(
-    (headers) => getAchievementApprovalByIdApi({ headers, path: { id } }),
-    authorizationToken
-  );
+  returnUndefinedOnNotFound: boolean = true
+): Promise<AchievementApprovalDetail | undefined> => {
+  return returnUndefinedOnNotFound
+    ? await callGetByIdRepo(
+        (headers) => getAchievementApprovalById({ headers, path: { id } }),
+        authorizationToken
+      )
+    : await callRepo(
+        (headers) => getAchievementApprovalById({ headers, path: { id } }),
+        authorizationToken
+      );
 };
 
 export const reviewAchievementApprovalRepo = async (
+  authorizationToken: string,
   id: string,
-  comment: string,
-  authorizationToken: string
+  comment: string
 ): Promise<AchievementApprovalDetail> => {
   return await callRepo(
     (headers) =>
-      createAchievementApprovalReviewApi({
+      createAchievementApprovalReview({
         headers,
         path: { id },
         body: { commentType: 'Conversation', comment },
@@ -67,13 +73,13 @@ export const reviewAchievementApprovalRepo = async (
 };
 
 export const rejectAchievementApprovalRepo = async (
+  authorizationToken: string,
   id: string,
-  comment: string,
-  authorizationToken: string
+  comment: string
 ): Promise<AchievementApprovalDetail> => {
   return await callRepo(
     (headers) =>
-      createAchievementApprovalReviewApi({
+      createAchievementApprovalReview({
         headers,
         path: { id },
         body: { commentType: 'Rejection', comment },
@@ -83,12 +89,12 @@ export const rejectAchievementApprovalRepo = async (
 };
 
 export const approveAchievementApprovalRepo = async (
-  id: string,
-  authorizationToken: string
+  authorizationToken: string,
+  id: string
 ): Promise<AchievementDetail> => {
   return await callRepo(
     (headers) =>
-      approveAchievementApprovalApi({
+      approveAchievementApproval({
         headers,
         path: { id },
       }),

@@ -175,9 +175,9 @@ paths:
       parameters:
         - in: path
           name: id
-          required: true          
           schema:
             type: string
+          required: true
           description: student id
         - in: path
           name: activityId
@@ -357,6 +357,7 @@ paths:
           content:
             application/json:
               schema:
+                $ref: "#/components/schemas/Error"
   /user-registrations:
     post:
       summary: Register a student user and wait for approval
@@ -431,10 +432,16 @@ paths:
               schema:
                 type: object
                 required:
+                  - status
                   - token
                   - menu
-                  - parentUser                  
+                  - parentUser
                 properties:
+                  status:
+                    type: string
+                    enum:
+                      - Success
+                      - ChangePasswordOnly
                   token:
                     type: string
                     description: JWT token
@@ -1035,6 +1042,14 @@ components:
       type: apiKey
       in: cookie
       name: jwt
+  parameters:
+    StudentIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: student id      
   schemas:
     Error:
       type: object

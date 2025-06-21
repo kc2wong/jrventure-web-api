@@ -5,7 +5,7 @@ import {
 } from '../__generated__/linkedup-backend-client';
 import { callRepo } from './repo-util';
 
-export const registerUser = async (
+export const registerUserRepo = async (
   userRegistration: UserRegistration,
   authorizationToken: string
 ): Promise<User> => {

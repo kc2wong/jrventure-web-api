@@ -41,7 +41,7 @@ export class LinkedupWebApiStack extends Stack {
       bucketName: 'jr-venture-media-upload-bucket',
       lifecycleRules: [
         {
-          expiration: Duration.hours(1),
+          expiration: Duration.days(1),
           enabled: true,
         },
       ],

@@ -1,16 +1,14 @@
-import {
-  findStudent as findStudentApi,
-  Student,
-} from '../__generated__/linkedup-backend-client';
+import { findStudent } from '@processapi/sdk.gen';
 import { callRepo } from './repo-util';
+import { Student } from '@processapi/types.gen';
 
 export const getStudentByIdRepo = async (
-  id: string,
-  authorizationToken: string
+  authorizationToken: string,
+  id: string
 ): Promise<Student | undefined> => {
   const result = await callRepo(
     (headers) =>
-      findStudentApi({
+      findStudent({
         headers,
         query: { id: [id] },
       }),
@@ -26,8 +24,7 @@ export const findStudentRepo = async (
   name?: string
 ): Promise<Student[]> => {
   return await callRepo(
-    (headers) =>
-      findStudentApi({ headers, query: { id: ids, classId, name } }),
+    (headers) => findStudent({ headers, query: { id: ids, classId, name } }),
     authorizationToken
   );
 };

@@ -1,19 +1,19 @@
 import {
-  createAchievement as createAchievementApi,
-  updateAchievement as updateAchievementApi,
-  findAchievement as findAchievementApi,
-  getAchievementById as getAchievementDetailByIdApi,
-  AchievementCreation,
   Achievement,
   AchievementApproval,
-  AchievementSubmissionRole,
-  OrderByDirection,
-  FindAchievementResult,
   AchievementAttachmentCreation,
+  AchievementCreation,
   AchievementDetail,
-} from '../__generated__/linkedup-backend-client';
-import { dto2Entity as submissionRoleDto2Entity } from '../mapper/achievement-submission-role-mapper';
-import { callRepo } from './repo-util';
+  AchievementSubmissionRole,
+  FindAchievementResult,
+  OrderByDirection,
+} from '@processapi/types.gen';
+import { callGetByIdRepo, callRepo } from './repo-util';
+import {
+  createAchievement,
+  findAchievement,
+  getAchievementById,
+} from '@processapi/sdk.gen';
 
 type FindAchievementParams = {
   studentId?: string;
@@ -26,18 +26,17 @@ type FindAchievementParams = {
 };
 
 export const findAchievementRepo = async (
-  args: FindAchievementParams,
-  authorizationToken: string
+  authorizationToken: string,
+  args: FindAchievementParams
 ): Promise<FindAchievementResult> => {
-  const { createDateFrom, role, ...rest } = args;
+  const { createDateFrom, ...rest } = args;
   const query = {
     ...rest,
     createDateFrom: createDateFrom ? createDateFrom.toISOString() : undefined,
-    role: role ? submissionRoleDto2Entity(role) : undefined,
   };
   return await callRepo(
     (headers) =>
-      findAchievementApi({
+      findAchievement({
         headers,
         query,
       }),
@@ -46,39 +45,29 @@ export const findAchievementRepo = async (
 };
 
 export const getAchievementDetailByIdRepo = async (
+  authorizationToken: string,
   id: string,
-  authorizationToken: string
-): Promise<AchievementDetail> => {
-  return await callRepo(
-    (headers) => getAchievementDetailByIdApi({ headers, path: { id } }),
-    authorizationToken
-  );
+  returnUndefinedOnNotFound: boolean = true
+): Promise<AchievementDetail | undefined> => {
+  return returnUndefinedOnNotFound
+    ? await callGetByIdRepo(
+        (headers) => getAchievementById({ headers, path: { id } }),
+        authorizationToken
+      )
+    : await callRepo(
+        (headers) => getAchievementById({ headers, path: { id } }),
+        authorizationToken
+      );
 };
 
-export const createAchievement = async (
+export const createAchievementRepo = async (
   authorizationToken: string,
   payload: AchievementCreation,
-  attachment: AchievementAttachmentCreation[],
+  attachment: AchievementAttachmentCreation[]
 ): Promise<Achievement | AchievementApproval> => {
   return await callRepo(
-    (headers) => createAchievementApi({ headers, body: { ...payload, attachment } }),
-    authorizationToken
-  );
-};
-
-export const updateAchievement = async (
-  id: string,
-  version: number,
-  payload: AchievementCreation,
-  authorizationToken: string
-): Promise<Achievement> => {
-  return await callRepo(
     (headers) =>
-      updateAchievementApi({
-        headers,
-        path: { id },
-        body: { ...payload, version },
-      }),
+      createAchievement({ headers, body: { ...payload, attachment } }),
     authorizationToken
   );
 };

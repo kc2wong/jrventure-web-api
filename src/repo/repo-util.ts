@@ -24,3 +24,23 @@ export const callRepo = async <T>(
   }
   return data;
 };
+
+export const callGetByIdRepo = async <T>(
+  repoCall: (
+    headers?: Record<string, string>
+  ) => Promise<{ data?: T; error?: any; status?: number }>,
+  authorizationToken?: string
+): Promise<T | undefined> => {
+  const { data, error, status } = authorizationToken
+    ? await repoCall({
+        Authorization: `Bearer ${authorizationToken}`,
+      })
+    : await repoCall();
+  if (error) {
+    if (status === 404) {
+      return undefined;
+    }
+    throw createSystemError(error, status);
+  }
+  return data;
+};

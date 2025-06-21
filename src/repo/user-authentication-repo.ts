@@ -1,27 +1,26 @@
 import {
-  authenticateUser as authenticateUserRepo,
-  authenticateGoogleUser as authenticateGoogleUserRepo,
+  authenticateUser,
+  authenticateGoogleUser,
   AuthenticationResponse,
-} from '../__generated__/linkedup-backend-client';
+} from '@processapi/index';
 import { callRepo } from './repo-util';
 
-export const authenticateUser = async (
+export const authenticateUserRepo = async (
   email: string,
   password: string
 ): Promise<AuthenticationResponse> => {
-  return await callRepo(
-    (headers) => authenticateUserRepo({ headers, body: { email, password } }),
+  return await callRepo((headers) =>
+    authenticateUser({ headers, body: { email, password } })
   );
 };
 
-export const googleAuthenticate = async (
+export const googleAuthenticateRepo = async (
   accessToken: string
 ): Promise<AuthenticationResponse> => {
-  return await callRepo(
-    (headers) =>
-      authenticateGoogleUserRepo({
-        headers,
-        body: { accessToken },
-      }),
+  return await callRepo((headers) =>
+    authenticateGoogleUser({
+      headers,
+      body: { accessToken },
+    })
   );
 };
