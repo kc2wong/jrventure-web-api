@@ -80,8 +80,8 @@ export const findPendingAchievementService = async (
   };
 
   const { offset, limit, total, data } = await findAchievementApprovalRepo(
+    jwt,
     queryParam,
-    jwt
   );
 
   const activityMap = await findActivities(jwt, data);

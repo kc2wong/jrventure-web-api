@@ -26,8 +26,8 @@ type FindAchievementApprovalParams = {
 };
 
 export const findAchievementApprovalRepo = async (
-  args: FindAchievementApprovalParams,
-  authorizationToken: string
+  authorizationToken: string,
+  args: FindAchievementApprovalParams
 ): Promise<FindAchievementApprovalResult> => {
   const { createDateFrom, ...rest } = args;
   const query = {

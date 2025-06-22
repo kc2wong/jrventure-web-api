@@ -12,6 +12,11 @@ import {
   GetAchievementByStudentActivityIdPathDto,
 } from '@api/achievement/achievement-schema';
 import { getAchievementByStudentActivityIdService } from '@service/achievement/get-student-achievement';
+import {
+  GetActivityByStudentId200ResponseDto,
+  GetActivityByStudentIdPathDto,
+} from '@api/activity/activity-schema';
+import { getActivityByStudentIdService } from '@service/activity/get-student-activity';
 
 export const findStudentApi = async (
   req: Request<{}, {}, {}, FindStudentQueryDto>,
@@ -41,6 +46,25 @@ export const getStudentByIdApi = async (
   }
 };
 
+export const getStudentActivityApi = async (
+  req: Request<GetActivityByStudentIdPathDto>,
+  res: Response<GetActivityByStudentId200ResponseDto>,
+  next: NextFunction
+) => {
+  try {
+    const jwt = res.locals.jwt;
+    const authenticatedUser = res.locals.authenticatedUser;
+    const activity = await getActivityByStudentIdService(
+      jwt,
+      authenticatedUser,
+      req.params.id
+    );
+    res.status(200).json(activity);
+  } catch (error: any) {
+    next(error);
+  }
+};
+
 export const getStudentAchievementByActivityIdApi = async (
   req: Request<GetAchievementByStudentActivityIdPathDto>,
   res: Response<GetAchievementByStudentActivityId200ResponseDto>,
@@ -49,13 +73,13 @@ export const getStudentAchievementByActivityIdApi = async (
   try {
     const jwt = res.locals.jwt;
     const authenticatedUser = res.locals.authenticatedUser;
-    const student = await getAchievementByStudentActivityIdService(
+    const achievement = await getAchievementByStudentActivityIdService(
       jwt,
       authenticatedUser,
       req.params.id,
       req.params.activityId
     );
-    res.status(200).json(student);
+    res.status(200).json(achievement);
   } catch (error: any) {
     next(error);
   }

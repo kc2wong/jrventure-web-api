@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/', controller.findStudentApi);
 router.get('/:id', controller.getStudentByIdApi);
+router.get('/:id/activities', controller.getStudentActivityApi);
 router.get(
   '/:id/activities/:activityId/achievements',
   achievementController.getAchievementApi

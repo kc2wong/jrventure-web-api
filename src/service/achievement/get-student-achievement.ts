@@ -28,7 +28,7 @@ export const getAchievementByStudentActivityIdService = async (
   studentId: string,
   activityId: string
 ): Promise<GetAchievementByStudentActivityId200ResponseDto> => {
-  const role = authenticatedUser.userRole;
+  const role = authenticatedUser.role;
   const withApprovalRight = authenticatedUser.withApprovalRight === true;
 
   const queryParam = {
@@ -60,7 +60,7 @@ export const getAchievementByStudentActivityIdService = async (
   // If user has approval right, then search from approved record
   const studentAchievementApproval = withApprovalRight
     ? []
-    : (await findAchievementApprovalRepo(queryParam, jwt)).data;
+    : (await findAchievementApprovalRepo(jwt, queryParam)).data;
   const achievementApproval =
     studentAchievementApproval.length === 1
       ? studentAchievementApproval[0]

@@ -27,6 +27,12 @@ export type UpdateActivityByIdRequestDto =
 export type UpdateActivityById200ResponseDto =
   paths['/activities/{id}']['put']['responses']['200']['content']['application/json'];
 
+export type GetActivityByStudentIdPathDto =
+  paths['/students/{id}/activities']['get']['parameters']['path'];
+
+export type GetActivityByStudentId200ResponseDto =
+  paths['/students/{id}/activities']['get']['responses']['200']['content']['application/json'];
+
 export type ActivityStatusDto = components['schemas']['ActivityStatus'];
 export type AchievementSubmissionRoleDto =
   components['schemas']['AchievementSubmissionRole'];

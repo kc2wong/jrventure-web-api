@@ -9,8 +9,8 @@ export const getActivityByIdService = async (
   jwt: string,
   id: string
 ): Promise<ActivityDetailDto> => {
-  const activity = await getActivityByIdRepo(jwt, id);
-  const userMap = await getCreatedUpdatedByService(jwt, [activity]);
+  const activity = await getActivityByIdRepo(jwt, id, false);
+  const userMap = await getCreatedUpdatedByService(jwt, activity ? [activity] : []);  // activity wont' be undefined
 
   return entity2DetailDto(
     activity,

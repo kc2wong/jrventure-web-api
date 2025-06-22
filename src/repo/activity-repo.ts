@@ -49,11 +49,25 @@ export const findActivityRepo = async (
   );
 };
 
-export const getActivityByIdRepo = async (
+// Overload signatures
+export function getActivityByIdRepo(
+  id: string,
+  authorizationToken: string,
+  returnUndefinedOnNotFound: false
+): Promise<Activity>;
+
+export function getActivityByIdRepo(
+  id: string,
+  authorizationToken: string,
+  returnUndefinedOnNotFound?: true
+): Promise<Activity | undefined>;
+
+// Implementation
+export async function getActivityByIdRepo(
   id: string,
   authorizationToken: string,
   returnUndefinedOnNotFound: boolean = true
-): Promise<Activity | undefined> => {
+): Promise<Activity | undefined> {
   return returnUndefinedOnNotFound
     ? await callGetByIdRepo(
         (headers) => getActivityById({ headers, path: { id } }),
@@ -63,7 +77,7 @@ export const getActivityByIdRepo = async (
         (headers) => getActivityById({ headers, path: { id } }),
         authorizationToken
       );
-};
+}
 
 export const createActivityRepo = async (
   authorizationToken: string,

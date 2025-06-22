@@ -38,7 +38,6 @@ const generateSystemUserToken = () => {
 
 export const generateAuthResponse = async (
   userEntity: User
-  // authorizationToken?: string
 ) => {
   const tempToken = generateSystemUserToken();
   const entitledStudents = await getEntitledStudents(
