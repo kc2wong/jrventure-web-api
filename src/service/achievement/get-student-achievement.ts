@@ -71,11 +71,12 @@ export const getAchievementByStudentActivityIdService = async (
       jwt,
       achievementApproval.id
     ))!;
+    const review = achievementApprovalDetail.review ?? [];
     const simpleUserMap = await getCreatedUpdatedByService(jwt, [
       achievementApprovalDetail,
-      ...(achievementApprovalDetail.review ?? []),
+      ...(review),
     ]);
-    const latestReview = achievementApprovalDetail.review.pop();
+    const latestReview = review.length > 0 ? review[review.length - 1] : undefined;
     const achievementApprovalDto = approvalDetailEntity2Dto(
       achievementApprovalDetail,
       activity,

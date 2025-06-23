@@ -51,21 +51,21 @@ export const findActivityRepo = async (
 
 // Overload signatures
 export function getActivityByIdRepo(
-  id: string,
   authorizationToken: string,
+  id: string,
   returnUndefinedOnNotFound: false
 ): Promise<Activity>;
 
 export function getActivityByIdRepo(
-  id: string,
   authorizationToken: string,
+  id: string,
   returnUndefinedOnNotFound?: true
 ): Promise<Activity | undefined>;
 
 // Implementation
 export async function getActivityByIdRepo(
-  id: string,
   authorizationToken: string,
+  id: string,
   returnUndefinedOnNotFound: boolean = true
 ): Promise<Activity | undefined> {
   return returnUndefinedOnNotFound

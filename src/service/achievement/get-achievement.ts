@@ -33,7 +33,7 @@ export const getAchievementByIdService = async (
     const review = achievementApprovalDetail
       ? achievementApprovalDetail.review
       : [];
-    const latestReview = review.pop();
+    const latestReview = review.length > 0 ? review[review.length - 1] : undefined;
     const simpleUserMap = await getCreatedUpdatedByService(jwt, [
       ...(review ?? []),
       achievementApprovalDetail,

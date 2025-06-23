@@ -28,7 +28,6 @@ export const getActivityByStudentIdService = async (
   const gradeNumber = parseInt(student.classId.replace(/[A-Za-z]/g, ''), 10);
   const role = authenticatedUser.role;
 
-  console.log(`authenticatedUser = ${JSON.stringify(authenticatedUser)}`)
   if (role !== 'Teacher' && role !== 'Student' && role !== 'Parent') {
     console.log(`Should have no activity for submission by role ${role}`);
     return [];
