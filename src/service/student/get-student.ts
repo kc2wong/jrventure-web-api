@@ -17,13 +17,13 @@ export const getStudentByIdService = async (
   let byClassError: any;
 
   try {
-    byId = await findStudentById(id, jwt);
+    byId = await findStudentById(jwt, id);
   } catch (err) {
     byIdError = err;
   }
 
   try {
-    byClass = await findStudentByClassIdStudentNumber(id.toUpperCase(), jwt);
+    byClass = await findStudentByClassIdStudentNumber(jwt, id.toUpperCase());
   } catch (err) {
     byClassError = err;
   }
@@ -59,6 +59,7 @@ const findStudentByClassIdStudentNumber = async (
     const studentNumber = safeParseInt(
       classIdStudentNumber.substring(2).split('-').pop() ?? ''
     );
+    console.log(`classId = ${classId}, studentNumber = ${studentNumber}`);
     const result = (
       await findStudentRepo(jwt, undefined, classId, undefined)
     ).filter((s) => s.studentNumber == studentNumber);
