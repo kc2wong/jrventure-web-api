@@ -1,4 +1,4 @@
-openapi: 3.1
+openapi: 3.0.0
 info:
   title: My Backend API
   description: A simple API for demonstration
@@ -276,11 +276,18 @@ paths:
             schema:
               type: object
               required:
-                - accessToken
+                - type
+                - token
               properties:
-                accessToken:
+                type:
                   type: string
-                  description: Id token returned from Google
+                  enum:
+                    - Web
+                    - Android
+                    - iOS
+                token:
+                  type: string
+                  description: Access token or Id token returned from Google
       responses:
         '200':
           description: JWT token returned on successful login

@@ -10,7 +10,8 @@ export const getUserByIdService = async (
   jwt: string,
   id: string
 ): Promise<GetUserById200ResponseDto> => {
-  const user = (await findUserRepo(jwt, { id: [id] }))[0];
+  const users = (await findUserRepo(jwt, { id: [id] }));
+  const user = users[0];
   if (user === undefined) {
     throw new UserNotFoundErrorDto(id);
   }

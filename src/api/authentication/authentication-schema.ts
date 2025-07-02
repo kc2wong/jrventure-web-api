@@ -11,3 +11,9 @@ export type UserAuthenticationRequestDto =
 
 export type UserAuthentication200ResponseDto =
   paths['/user-authentications']['post']['responses']['200']['content']['application/json'];
+
+export type UserAuthenticationRefreshRequestDto =
+  paths['/user-authentications/refresh']['post']['requestBody']['content']['application/json'];
+
+export type UserAuthenticationRefresh200ResponseDto =
+  paths['/user-authentications/refresh']['post']['responses']['200']['content']['application/json'];

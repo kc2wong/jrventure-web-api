@@ -459,6 +459,57 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /user-authentications/refresh:
+    post:
+      summary: Refresh user authentication
+      tags:
+        - User Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: JWT token returned on successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - token
+                  - menu
+                  - parentUser
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - Success
+                      - ChangePasswordOnly
+                  token:
+                    type: string
+                    description: JWT token
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  menu:
+                    $ref: "#/components/schemas/MenuItem"
+                  parentUser:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SimpleUser"
+                    description: Parent users if this user is a student
+        '401':
+          description: Unauthorized - Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"                
   /google-authentications:
     post:
       summary: Authenticate a user who is signed up with google
@@ -472,11 +523,18 @@ paths:
             schema:
               type: object
               required:
-                - accessToken
+                - type
+                - token
               properties:
-                accessToken:
+                type:
                   type: string
-                  description: Access token returned from Google
+                  enum:
+                    - Web
+                    - Android
+                    - iOS
+                token:
+                  type: string
+                  description: Access token or Id token returned from Google
       responses:
         '200':
           description: JWT token returned on successful login

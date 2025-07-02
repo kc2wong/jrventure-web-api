@@ -15,12 +15,13 @@ export const authenticateUserRepo = async (
 };
 
 export const googleAuthenticateRepo = async (
-  accessToken: string
+  type: 'Web' | 'Android' | 'iOS',
+  token: string
 ): Promise<AuthenticationResponse> => {
   return await callRepo((headers) =>
     authenticateGoogleUser({
       headers,
-      body: { accessToken },
+      body: { type, token },
     })
   );
 };

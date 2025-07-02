@@ -19,20 +19,14 @@ interface FindUserParams {
 
 export const findUserRepo = async (
   authorizationToken: string,
-  { id, email, name, studentId, role, status }: FindUserParams
+  query: FindUserParams
+  // { id, email, name, studentId, role, status }: FindUserParams
 ): Promise<User[]> => {
   return await callRepo(
     (headers) =>
       findUser({
         headers,
-        query: {
-          id,
-          email,
-          name,
-          studentId,
-          status,
-          role,
-        },
+        query,
       }),
     authorizationToken
   );

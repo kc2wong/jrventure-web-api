@@ -11,7 +11,7 @@ export const googleAuthenticationApi = async (
   next: NextFunction
 ) => {
   try {
-    const result = await googleAuthenticationService(req.body.accessToken);
+    const result = await googleAuthenticationService(req.body);
     res.cookie('jwt', result.token, {
       httpOnly: true,
       secure: false,

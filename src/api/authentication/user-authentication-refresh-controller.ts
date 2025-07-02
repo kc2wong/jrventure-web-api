@@ -1,22 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import { userAuthenticationService } from '@service/authentication/user-authentication';
 import {
-  UserAuthenticationRequestDto,
-  UserAuthentication200ResponseDto,
+  UserAuthenticationRefreshRequestDto,
+  UserAuthenticationRefresh200ResponseDto,
 } from '@api/authentication/authentication-schema';
 
-export const userAuthenticationApi = async (
-  req: Request<{}, {}, UserAuthenticationRequestDto>,
-  res: Response<UserAuthentication200ResponseDto>,
+export const userAuthenticationRefreshApi = async (
+  req: Request<{}, {}, UserAuthenticationRefreshRequestDto>,
+  res: Response<UserAuthenticationRefresh200ResponseDto>,
   next: NextFunction
 ) => {
   try {
-    // const { email, password } = req.body;
-    const email = 'kc2wong@gmail.com';
-    const password = '123456';
+    const jwt = req.body.token;
+    const token = jwt.toLowerCase().startsWith('bearer ') ? jwt.slice(7) : jwt; // Remove 'Bearer ' prefix if present
     const result = await userAuthenticationService({
-      credential: { email, password },
+      token: { jwt: token },
     });
+
     res.cookie('jwt', result.token, {
       httpOnly: true,
       secure: false,
