@@ -19,6 +19,7 @@ export class LinkedupWebApiStack extends Stack {
         handler: 'handler',
         environment: {
           PORT: '3000', // not really needed, but some ORMs require PORT
+          ENV: process.env.ENV!,
           BACKEND_API_URL: process.env.BACKEND_API_URL!,
           CORS_ORIGIN: process.env.CORS_ORIGIN!,
           PERSPECTIVE_API_KEY: process.env.PERSPECTIVE_API_KEY!,
@@ -32,7 +33,7 @@ export class LinkedupWebApiStack extends Stack {
       defaultCorsPreflightOptions: {
         allowOrigins: [process.env.CORS_ORIGIN!],
         allowHeaders: ['Content-Type', 'Authorization'],
-        allowMethods: ['OPTIONS', 'POST'],
+        allowMethods: ['OPTIONS', 'POST', 'GET', 'PUT', 'DELETE'],
         allowCredentials: true,
       },
     });

@@ -11,16 +11,14 @@ export const userAuthenticationApi = async (
   next: NextFunction
 ) => {
   try {
-    // const { email, password } = req.body;
-    const email = 'kc2wong@gmail.com';
-    const password = '123456';
+    const { email, password } = req.body;
     const result = await userAuthenticationService({
       credential: { email, password },
     });
     res.cookie('jwt', result.token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: process.env.ENV === 'production',
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

@@ -14,8 +14,8 @@ export const googleAuthenticationApi = async (
     const result = await googleAuthenticationService(req.body);
     res.cookie('jwt', result.token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: process.env.ENV === 'production',
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
