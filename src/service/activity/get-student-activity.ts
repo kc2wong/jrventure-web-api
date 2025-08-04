@@ -1,15 +1,11 @@
-import {
-  findAchievementRepo,
-} from '@repo/achievement-repo';
+import { findAchievementRepo } from '@repo/achievement-repo';
 import { getStudentByIdRepo } from '@repo/student-repo';
 import {
   AchievementSubmissionRole,
   OrderByDirection,
 } from '@processapi/types.gen';
 import { findActivityRepo } from '@repo/activity-repo';
-import {
-  findAchievementApprovalRepo,
-} from '@repo/achievement-approval-repo';
+import { findAchievementApprovalRepo } from '@repo/achievement-approval-repo';
 import { AuthenticatedUser } from '@type/authentication';
 import { GetActivityByStudentId200ResponseDto } from '@api/activity/activity-schema';
 import { entity2Dto } from '@service/activity/mapper/activity-mapper';
@@ -62,17 +58,19 @@ export const getActivityByStudentIdService = async (
     limit: data.length,
     orderByDirection: 'Ascending' as OrderByDirection,
   };
-  const [studentAchievement, studentAchievementApproval] = await Promise.all([
-    findAchievementRepo(jwt, queryParam).then((res) => res.data),
-    findAchievementApprovalRepo(jwt, queryParam).then((res) => res.data),
-  ]);
+
+  const achievementPromise = findAchievementRepo(jwt, queryParam);
+  const approvalPromise = findAchievementApprovalRepo(jwt, queryParam);
+
+  const [studentAchievementRes, studentAchievementApprovalRes] =
+    await Promise.all([achievementPromise, approvalPromise]);
 
   const achievementStatusMap = new Map(
-    studentAchievement.map((ac) => [ac.activityId, ac.status])
+    studentAchievementRes.data.map((ac) => [ac.activityId, ac.status])
   );
 
   const achievementApprovalStatusMap = new Map(
-    studentAchievementApproval.map((ac) => [ac.activityId, ac.status])
+    studentAchievementApprovalRes.data.map((ac) => [ac.activityId, ac.status])
   );
 
   return data.map((act) => ({

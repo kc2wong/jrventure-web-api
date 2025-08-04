@@ -11,11 +11,12 @@ export const googleAuthenticationApi = async (
   next: NextFunction
 ) => {
   try {
+  const isProduction = process.env.ENV === 'production';
     const result = await googleAuthenticationService(req.body);
     res.cookie('jwt', result.token, {
       httpOnly: true,
-      secure: process.env.ENV === 'production',
-      sameSite: 'none',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : undefined,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

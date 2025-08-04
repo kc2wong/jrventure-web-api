@@ -10,6 +10,7 @@ export const userAuthenticationApi = async (
   res: Response<UserAuthentication200ResponseDto>,
   next: NextFunction
 ) => {
+  const isProduction = process.env.ENV === 'production';
   try {
     const { email, password } = req.body;
     const result = await userAuthenticationService({
@@ -17,8 +18,10 @@ export const userAuthenticationApi = async (
     });
     res.cookie('jwt', result.token, {
       httpOnly: true,
-      secure: process.env.ENV === 'production',
-      sameSite: 'none',
+      // secure: process.env.ENV === 'production',
+      // sameSite: 'none',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : undefined,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

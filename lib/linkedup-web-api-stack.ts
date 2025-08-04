@@ -4,11 +4,20 @@ import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 
-export class LinkedupWebApiStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
+export interface ApiStackProps extends StackProps {
+  domainName: string; // e.g. 'api.kelvin-wong.cloud'
+  certificate: acm.ICertificate;
+}
+
+export class LinkedupWebApiGatewayStack extends Stack {
+  constructor(scope: Construct, id: string, props: ApiStackProps) {
+    super(scope, id, {
+      ...props,
+      crossRegionReferences: true,
+    });
 
     const linkedupLambda = new lambdaNodejs.NodejsFunction(
       this,
@@ -27,7 +36,7 @@ export class LinkedupWebApiStack extends Stack {
       }
     );
 
-    new apigateway.LambdaRestApi(this, 'LinkedupWebApiApi', {
+    const api = new apigateway.LambdaRestApi(this, 'LinkedupWebApiGateway', {
       handler: linkedupLambda,
       proxy: true,
       defaultCorsPreflightOptions: {
@@ -36,6 +45,24 @@ export class LinkedupWebApiStack extends Stack {
         allowMethods: ['OPTIONS', 'POST', 'GET', 'PUT', 'DELETE'],
         allowCredentials: true,
       },
+    });
+
+    // 👇 Custom Domain
+    const domain = new apigateway.DomainName(
+      this,
+      'LinkedupWebApiCustomDomain',
+      {
+        domainName: props.domainName, // e.g. 'api.kelvin-wong.cloud'
+        certificate: props.certificate,
+        endpointType: apigateway.EndpointType.EDGE,
+        securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
+      }
+    );
+
+    new apigateway.BasePathMapping(this, 'LinkedupWebApiBasePathMapping', {
+      domainName: domain,
+      restApi: api,
+      basePath: '', // leave empty for root
     });
 
     new s3.Bucket(this, 'JrVentureMediaUploadBucket', {
@@ -51,15 +78,18 @@ export class LinkedupWebApiStack extends Stack {
       autoDeleteObjects: true, // Needs permissions for destroy
       cors: [
         {
-          allowedMethods: [HttpMethods.PUT, HttpMethods.POST, HttpMethods.GET, HttpMethods.DELETE, HttpMethods.HEAD],
-          allowedOrigins: [
-            'http://localhost:3000',
-            process.env.CORS_ORIGIN!,
+          allowedMethods: [
+            HttpMethods.PUT,
+            HttpMethods.POST,
+            HttpMethods.GET,
+            HttpMethods.DELETE,
+            HttpMethods.HEAD,
           ],
+          allowedOrigins: ['http://localhost:3000', process.env.CORS_ORIGIN!],
           allowedHeaders: ['*'],
           exposedHeaders: ['ETag'],
         },
-      ],      
+      ],
     });
   }
 }
