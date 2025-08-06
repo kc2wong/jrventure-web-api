@@ -1,27 +1,25 @@
-import { Stack, StackProps, Duration, RemovalPolicy } from 'aws-cdk-lib';
+import {
+  Stack,
+  StackProps,
+  Duration,
+  RemovalPolicy,
+  CfnOutput,
+  Fn,
+} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { HttpMethods } from 'aws-cdk-lib/aws-s3';
 
-export interface ApiStackProps extends StackProps {
-  domainName: string; // e.g. 'api.kelvin-wong.cloud'
-  certificate: acm.ICertificate;
-}
-
 export class LinkedupWebApiGatewayStack extends Stack {
-  constructor(scope: Construct, id: string, props: ApiStackProps) {
-    super(scope, id, {
-      ...props,
-      crossRegionReferences: true,
-    });
+  constructor(scope: Construct, id: string, props: StackProps) {
+    super(scope, id, props);
 
     const linkedupLambda = new lambdaNodejs.NodejsFunction(
       this,
-      'LinkedupWebApiLambda',
+      'JrventureWebApiLambda',
       {
         runtime: lambda.Runtime.NODEJS_20_X,
         entry: 'src/lambda/index.ts', // points to your lambda handler
@@ -36,7 +34,7 @@ export class LinkedupWebApiGatewayStack extends Stack {
       }
     );
 
-    const api = new apigateway.LambdaRestApi(this, 'LinkedupWebApiGateway', {
+    const api = new apigateway.LambdaRestApi(this, 'JrventureWebApiGateway', {
       handler: linkedupLambda,
       proxy: true,
       defaultCorsPreflightOptions: {
@@ -47,22 +45,14 @@ export class LinkedupWebApiGatewayStack extends Stack {
       },
     });
 
-    // 👇 Custom Domain
-    const domain = new apigateway.DomainName(
-      this,
-      'LinkedupWebApiCustomDomain',
-      {
-        domainName: props.domainName, // e.g. 'api.kelvin-wong.cloud'
-        certificate: props.certificate,
-        endpointType: apigateway.EndpointType.EDGE,
-        securityPolicy: apigateway.SecurityPolicy.TLS_1_2,
-      }
-    );
+    new CfnOutput(this, 'JrventureWebApiDomainOuput', {
+      value: api.domainName?.domainName ?? Fn.select(2, Fn.split('/', api.url)),
+      exportName: 'JrventureWebApiDomain',
+    });
 
-    new apigateway.BasePathMapping(this, 'LinkedupWebApiBasePathMapping', {
-      domainName: domain,
-      restApi: api,
-      basePath: '', // leave empty for root
+    new CfnOutput(this, 'JrventureWebApiStageOutput', {
+      value: api.deploymentStage.stageName,
+      exportName: 'JrventureWebApiStage',
     });
 
     new s3.Bucket(this, 'JrVentureMediaUploadBucket', {
