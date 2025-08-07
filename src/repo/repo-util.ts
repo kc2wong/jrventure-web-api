@@ -1,4 +1,5 @@
-import { client } from '../__generated__/linkedup-backend-client/client.gen';
+import { client } from '@processapi/client.gen';
+
 import { createSystemError } from './error-util';
 
 client.setConfig({

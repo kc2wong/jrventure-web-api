@@ -1,5 +1,5 @@
-import { Student } from '@processapi/types.gen';
 import { StudentDto } from '@api/student/student-schema';
+import { Student } from '@processapi/types.gen';
 
 export const entity2Dto = ({
   lastName,

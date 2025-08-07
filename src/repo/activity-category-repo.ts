@@ -1,6 +1,7 @@
-import { ActivityCategory } from '@processapi/types.gen';
-import { callRepo } from './repo-util';
 import { listActivityCategory } from '@processapi/sdk.gen';
+import { ActivityCategory } from '@processapi/types.gen';
+
+import { callRepo } from './repo-util';
 
 export const listActivityCategoryRepo = async (
   authorizationToken: string

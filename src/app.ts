@@ -1,21 +1,23 @@
+/* eslint-disable import/order */
 import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import userRegistrationRouter from '@api/user-registration/user-registration-router';
-import userAuthenticationRouter from '@api/authentication/user-authentication-router';
-import googleAuthenticationRouter from '@api/authentication/google-authentication-router';
-import userMaintenanceRouter from '@api/user/user-router';
-import studentRouter from '@api/student/student-router';
-import activityCategoryRouter from '@api/activity-category/activity-category-router';
-import activityRouter from '@api/activity/activity-router';
+
 import achievementRouter from '@api/achievement/achievement-router';
+import activityRouter from '@api/activity/activity-router';
+import activityCategoryRouter from '@api/activity-category/activity-category-router';
+import googleAuthenticationRouter from '@api/authentication/google-authentication-router';
+import userAuthenticationRouter from '@api/authentication/user-authentication-router';
 import mediaRouter from '@api/media/media-router';
 import { errorHandler } from '@api/middleware/error-handler';
-import cookieParser from 'cookie-parser';
 import { jwtHandler } from '@api/middleware/jwt-handler';
+import studentRouter from '@api/student/student-router';
+import userMaintenanceRouter from '@api/user/user-router';
+import userRegistrationRouter from '@api/user-registration/user-registration-router';
 
 const app = express();
 app.use(bodyParser.json());

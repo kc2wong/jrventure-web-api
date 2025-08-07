@@ -1,5 +1,5 @@
-import { UserStatus } from '@processapi/types.gen';
 import { UserStatusDto } from '@api/user/user-schema';
+import { UserStatus } from '@processapi/types.gen';
 
 export const entity2Dto = (src: UserStatus): UserStatusDto => {
   return src;

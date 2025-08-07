@@ -1,6 +1,5 @@
-import { ActivityStatusDto } from "@api/activity/activity-schema";
-import { ActivityStatus } from "@processapi/types.gen";
-
+import { ActivityStatusDto } from '@api/activity/activity-schema';
+import { ActivityStatus } from '@processapi/types.gen';
 
 export const entity2Dto = (src: ActivityStatus): ActivityStatusDto => {
   return src;

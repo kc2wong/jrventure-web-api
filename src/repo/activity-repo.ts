@@ -1,4 +1,10 @@
 import {
+  createActivity,
+  findActivity,
+  getActivityById,
+  updateActivity,
+} from '@processapi/sdk.gen';
+import {
   Activity,
   ActivityStatus,
   ActivityPayload,
@@ -6,13 +12,8 @@ import {
   OrderByDirection,
   AchievementSubmissionRole,
 } from '@processapi/types.gen';
+
 import { callGetByIdRepo, callRepo } from './repo-util';
-import {
-  createActivity,
-  findActivity,
-  getActivityById,
-  updateActivity,
-} from '@processapi/sdk.gen';
 
 type FindActivityParams = {
   id?: string[];

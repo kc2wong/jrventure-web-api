@@ -1,5 +1,3 @@
-import { entity2Dto } from '@service/achievement/mapper/achievement-mapper';
-import { findActivityRepo } from '@repo/activity-repo';
 import {
   FindPendingAchievement200ResponseDto,
   FindPendingAchievementQueryDto,
@@ -13,7 +11,9 @@ import {
   Student,
 } from '@processapi/types.gen';
 import { findAchievementApprovalRepo } from '@repo/achievement-approval-repo';
+import { findActivityRepo } from '@repo/activity-repo';
 import { findStudentRepo } from '@repo/student-repo';
+import { entity2Dto } from '@service/achievement/mapper/achievement-mapper';
 
 const findActivities = async (
   jwt: string,

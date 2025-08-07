@@ -1,14 +1,15 @@
-import { findAchievementRepo } from '@repo/achievement-repo';
-import { getStudentByIdRepo } from '@repo/student-repo';
+import { GetActivityByStudentId200ResponseDto } from '@api/activity/activity-schema';
 import {
   AchievementSubmissionRole,
   OrderByDirection,
 } from '@processapi/types.gen';
-import { findActivityRepo } from '@repo/activity-repo';
 import { findAchievementApprovalRepo } from '@repo/achievement-approval-repo';
-import { AuthenticatedUser } from '@type/authentication';
-import { GetActivityByStudentId200ResponseDto } from '@api/activity/activity-schema';
+import { findAchievementRepo } from '@repo/achievement-repo';
+import { findActivityRepo } from '@repo/activity-repo';
+import { getStudentByIdRepo } from '@repo/student-repo';
 import { entity2Dto } from '@service/activity/mapper/activity-mapper';
+import { AuthenticatedUser } from '@type/authentication';
+import { logger } from '@util/logging-util';
 
 export const getActivityByStudentIdService = async (
   jwt: string,
@@ -17,7 +18,7 @@ export const getActivityByStudentIdService = async (
 ): Promise<GetActivityByStudentId200ResponseDto> => {
   const student = await getStudentByIdRepo(jwt, studentId);
   if (student === undefined) {
-    console.log(`Student with ID ${studentId} not found`);
+    logger.info(`Student with ID ${studentId} not found`);
     return [];
   }
 
@@ -25,7 +26,7 @@ export const getActivityByStudentIdService = async (
   const role = authenticatedUser.role;
 
   if (role !== 'Teacher' && role !== 'Student' && role !== 'Parent') {
-    console.log(`Should have no activity for submission by role ${role}`);
+    logger.info(`Should have no activity for submission by role ${role}`);
     return [];
   }
 

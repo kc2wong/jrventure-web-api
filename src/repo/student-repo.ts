@@ -1,6 +1,7 @@
 import { findStudent } from '@processapi/sdk.gen';
-import { callRepo } from './repo-util';
 import { Student } from '@processapi/types.gen';
+
+import { callRepo } from './repo-util';
 
 export const getStudentByIdRepo = async (
   authorizationToken: string,

@@ -1,11 +1,11 @@
 import {
-  AchievementAttachmentCreation,
-  AchievementAttachment,
-} from '@processapi/types.gen';
-import {
   AchievementAttachmentCreationDto,
   AchievementAttachmentDto,
 } from '@api/achievement/achievement-schema';
+import {
+  AchievementAttachmentCreation,
+  AchievementAttachment,
+} from '@processapi/types.gen';
 import { privateBucketName } from '@util/s3-util';
 
 const uploadBucketName = privateBucketName;

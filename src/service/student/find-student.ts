@@ -2,11 +2,10 @@ import {
   FindStudentQueryDto,
   FindStudent200ResponseDto,
 } from '@api/student/student-schema';
-import { entity2Dto as studentEntity2Dto } from '@service/student/mapper/student-mapper';
 import { findStudentRepo } from '@repo/student-repo';
-
-import { safeParseInt } from '@util/string-util';
+import { entity2Dto as studentEntity2Dto } from '@service/student/mapper/student-mapper';
 import { asArray } from '@util/array-util';
+import { safeParseInt } from '@util/string-util';
 
 export const findStudentService = async (
   jwt: string,

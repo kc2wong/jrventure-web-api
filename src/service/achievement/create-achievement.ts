@@ -3,14 +3,13 @@ import {
   CreateAchievementRequestDto,
 } from '@api/achievement/achievement-schema';
 import { createAchievementRepo } from '@repo/achievement-repo';
+import { getActivityByIdRepo } from '@repo/activity-repo';
+import { getStudentByIdRepo } from '@repo/student-repo';
+import { creationDto2Entity as attachmentCreationDto2Entity } from '@service/achievement/mapper/achievement-approval-attachment-mapper';
 import {
   creationDto2Entity,
   entity2Dto,
 } from '@service/achievement/mapper/achievement-mapper';
-import { creationDto2Entity as attachmentCreationDto2Entity } from '@service/achievement/mapper/achievement-approval-attachment-mapper';
-import { getStudentByIdRepo } from '@repo/student-repo';
-import { Activity, Student } from '@processapi/types.gen';
-import { getActivityByIdRepo } from '@repo/activity-repo';
 
 export const createAchievementService = async (
   jwt: string,

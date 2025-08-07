@@ -1,4 +1,10 @@
 import {
+  approveAchievementApproval,
+  createAchievementApprovalReview,
+  findAchievementApproval,
+  getAchievementApprovalById,
+} from '@processapi/sdk.gen';
+import {
   AchievementSubmissionRole,
   OrderByDirection,
   FindAchievementApprovalResult,
@@ -6,13 +12,8 @@ import {
   AchievementApprovalDetail,
   AchievementDetail,
 } from '@processapi/types.gen';
+
 import { callGetByIdRepo, callRepo } from './repo-util';
-import {
-  approveAchievementApproval,
-  createAchievementApprovalReview,
-  findAchievementApproval,
-  getAchievementApprovalById,
-} from '@processapi/sdk.gen';
 
 type FindAchievementApprovalParams = {
   studentId?: string;

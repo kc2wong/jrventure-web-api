@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { logger } from '@util/logging-util';
+
 export const errorHandler = (
   err: any,
   req: Request,
   res: Response,
   _next: NextFunction
 ): void => {
-  console.log(`err = ${JSON.stringify(err)}`)
+  logger.info(`err = ${JSON.stringify(err)}`)
   if (err.httpStatus && err.code && err.message) {
     const errorDto = {
       code: err.code,

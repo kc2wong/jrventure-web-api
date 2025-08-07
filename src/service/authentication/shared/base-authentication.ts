@@ -1,7 +1,7 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-import { User } from '@processapi/types.gen';
 import { SimpleUserDto } from '@api/user/user-schema';
+import { User } from '@processapi/types.gen';
 import { getStudentByIdRepo } from '@repo/student-repo';
 import { entity2Dto as userEntity2Dto } from '@service/user/mapper/user-mapper';
 
@@ -15,7 +15,9 @@ const getEntitledStudents = async (
   authorizationToken: string,
   entitledStudentIds?: string[]
 ) => {
-  if (!entitledStudentIds) return [];
+  if (!entitledStudentIds) {
+    return [];
+  }
   const students = await Promise.all(
     entitledStudentIds.map((i) => getStudentByIdRepo(authorizationToken, i))
   );
@@ -36,9 +38,7 @@ const generateSystemUserToken = () => {
   });
 };
 
-export const generateAuthResponse = async (
-  userEntity: User
-) => {
+export const generateAuthResponse = async (userEntity: User) => {
   const tempToken = generateSystemUserToken();
   const entitledStudents = await getEntitledStudents(
     tempToken,

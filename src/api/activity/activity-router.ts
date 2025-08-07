@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import * as controller from '@api/activity/activity-controller';
 
 const router = Router();

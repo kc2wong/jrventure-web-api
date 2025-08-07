@@ -1,9 +1,10 @@
+import jsonwebtoken from 'jsonwebtoken';
+
 import { SimpleUserDto } from '@api/user/user-schema';
 import { authenticateUserRepo } from '@repo/user-authentication-repo';
 import { findUserRepo } from '@repo/user-repo';
 import { generateAuthResponse } from '@service/authentication/shared/base-authentication';
 import { getUserByIdService } from '@service/user/get-user';
-import jsonwebtoken from 'jsonwebtoken';
 
 type OneOnly<T> = {
   [K in keyof T]: { [P in K]: T[P] } & Partial<
@@ -16,7 +17,9 @@ const getParentUsers = async (
   role: string,
   entitledStudentId: string[]
 ): Promise<SimpleUserDto[]> => {
-  if (role !== 'Student') return [];
+  if (role !== 'Student') {
+    return [];
+  }
 
   const users = await findUserRepo(jwt, { studentId: entitledStudentId[0] });
 

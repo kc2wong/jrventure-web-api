@@ -1,12 +1,12 @@
+import { SimpleUserDto } from '@api/user/user-schema';
 import {
   AuditControl,
   Student,
   User,
 } from '@processapi/types.gen';
-import { DefaultMap } from '@type/default-map';
 import { findStudentRepo } from '@repo/student-repo';
 import { findUserRepo } from '@repo/user-repo';
-import { SimpleUserDto } from '@api/user/user-schema';
+import { DefaultMap } from '@type/default-map';
 
 const unknownUser: SimpleUserDto = {
   id: '-1',

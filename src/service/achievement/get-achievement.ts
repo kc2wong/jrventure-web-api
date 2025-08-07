@@ -1,20 +1,20 @@
 import {
   GetAchievementById200ResponseDto,
 } from '@api/achievement/achievement-schema';
+import { AchievementNotFoundErrorDto } from '@api/shared/error-schema';
+import {
+  getAchievementApprovalByIdRepo,
+} from '@repo/achievement-approval-repo';
 import {
   getAchievementDetailByIdRepo,
 } from '@repo/achievement-repo';
+import { getActivityByIdRepo } from '@repo/activity-repo';
+import { getStudentByIdRepo } from '@repo/student-repo';
 import {
   approvalDetailEntity2Dto,
   detailEntity2Dto,
 } from '@service/achievement/mapper/achievement-mapper';
-import { getStudentByIdRepo } from '@repo/student-repo';
-import { getActivityByIdRepo } from '@repo/activity-repo';
-import {
-  getAchievementApprovalByIdRepo,
-} from '@repo/achievement-approval-repo';
 import { getCreatedUpdatedByService } from '@service/user/shared/enrich-user';
-import { AchievementNotFoundErrorDto } from '@api/shared/error-schema';
 
 export const getAchievementByIdService = async (
   jwt: string,

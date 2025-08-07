@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { userAuthenticationService } from '@service/authentication/user-authentication';
+
 import {
   UserAuthenticationRefreshRequestDto,
   UserAuthenticationRefresh200ResponseDto,
 } from '@api/authentication/authentication-schema';
+import { userAuthenticationService } from '@service/authentication/user-authentication';
+import { logger } from '@util/logging-util';
 
 export const userAuthenticationRefreshApi = async (
   req: Request<{}, {}, UserAuthenticationRefreshRequestDto>,
@@ -26,7 +28,7 @@ export const userAuthenticationRefreshApi = async (
 
     res.status(200).json(result);
   } catch (error: any) {
-    console.log(`error = ${JSON.stringify(error)}`);
+    logger.error(`error = ${JSON.stringify(error)}`);
     next(error);
   }
 };

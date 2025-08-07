@@ -1,5 +1,4 @@
-import { _Error as ErrorModel } from '../__generated__/linkedup-backend-client';
-
+import { _Error as ErrorModel } from '@processapi/types.gen';
 
 export const createSystemError = (
   error: any,

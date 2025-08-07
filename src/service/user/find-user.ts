@@ -1,14 +1,13 @@
 import { FindUserQueryDto, UserDto } from '@api/user/user-schema';
+import { findUserRepo } from '@repo/user-repo';
+import { entity2Dto } from '@service/user/mapper/user-mapper';
 import { dto2Entity as roleDto2Entity } from '@service/user/mapper/user-role-mapper';
 import { dto2Entity as statusDto2Entity } from '@service/user/mapper/user-status-mapper';
-import { entity2Dto } from '@service/user/mapper/user-mapper';
-
-import { findUserRepo } from '@repo/user-repo';
-import { asArray } from '@util/array-util';
 import {
   getCreatedUpdatedByService,
   getEntitledStudentsService,
 } from '@service/user/shared/enrich-user';
+import { asArray } from '@util/array-util';
 
 export const findUserService = async (
   jwt: string,

@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
+
 import {
   GoogleAuthentication200ResponseDto,
   GoogleAuthenticationRequestDto,
 } from '@api/authentication/authentication-schema';
 import { googleAuthenticationService } from '@service/authentication/google-authentication';
+import { logger } from '@util/logging-util';
 
 export const googleAuthenticationApi = async (
   req: Request<{}, {}, GoogleAuthenticationRequestDto>,
@@ -22,7 +24,7 @@ export const googleAuthenticationApi = async (
 
     res.status(200).json(result);
   } catch (error: any) {
-    console.log(`error = ${JSON.stringify(error)}`);
+    logger.error(`error = ${JSON.stringify(error)}`);
     next(error);
   }
 };

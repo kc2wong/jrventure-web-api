@@ -16,7 +16,7 @@ export const doesFileExist = async (
   try {
     await s3client.send(new HeadObjectCommand({ Bucket: bucket, Key: key }));
     return true; // exists
-  } catch (err: any) {
+  } catch (_err: any) {
     return false;
   }
 };

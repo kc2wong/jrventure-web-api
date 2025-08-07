@@ -1,4 +1,10 @@
 import {
+  AchievementDto,
+  AchievementCreationDto,
+  AchievementDetailDto,
+} from '@api/achievement/achievement-schema';
+import { SimpleUserDto } from '@api/user/user-schema';
+import {
   Achievement,
   AchievementDetail,
   AchievementApproval,
@@ -7,18 +13,14 @@ import {
   Activity,
   Student,
 } from '@processapi/types.gen';
-import {
-  AchievementDto,
-  AchievementCreationDto,
-  AchievementDetailDto,
-} from '@api/achievement/achievement-schema';
 import { entity2Dto as achievementApprovalReviewEntity2Dto } from '@service/achievement/mapper/achievement-approval-review-mapper';
+import { entity2Dto as achievementSubmissionRoleEntity2Dto } from '@service/activity/mapper/achievement-submission-role-mapper';
+import { entity2Dto as activityEntity2Dto } from '@service/activity/mapper/activity-mapper';
+import { entity2Dto as studentEntity2Dto } from '@service/student/mapper/student-mapper';
+
 import { entity2Dto as achievementApprovalAttachmentEntity2Dto } from './achievement-approval-attachment-mapper';
 import { entity2Dto as achievementStatusEntity2Dto } from './achievement-status-mapper';
-import { entity2Dto as achievementSubmissionRoleEntity2Dto } from '@service/activity/mapper/achievement-submission-role-mapper';
-import { entity2Dto as studentEntity2Dto } from '@service/student/mapper/student-mapper';
-import { entity2Dto as activityEntity2Dto } from '@service/activity/mapper/activity-mapper';
-import { SimpleUserDto } from '@api/user/user-schema';
+
 
 export const entity2Dto = (
   src: Achievement | AchievementApproval,

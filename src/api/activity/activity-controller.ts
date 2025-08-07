@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { listActivityCategoryService } from '@service/activity-category/list-activity-category';
-import { ListActivityCategory200ResponseDto } from '@api/activity-category/activity-category-schema';
+
 import {
   CreateActivity201ResponseDto,
   CreateActivityRequestDto,
@@ -13,9 +12,9 @@ import {
   UpdateActivityByIdRequestDto,
 } from '@api/activity/activity-schema';
 import { createActivityService } from '@service/activity/create-activity';
-import { updateActivityService } from '@service/activity/update-activity';
-import { getActivityByIdService } from '@service/activity/get-activity';
 import { findActivityService } from '@service/activity/find-activity';
+import { getActivityByIdService } from '@service/activity/get-activity';
+import { updateActivityService } from '@service/activity/update-activity';
 
 export const findActivityApi = async (
   req: Request<{}, {}, {}, FindActivityQueryDto>,

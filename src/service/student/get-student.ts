@@ -1,11 +1,10 @@
-import { GetStudentById200ResponseDto } from '@api/student/student-schema';
-import { entity2Dto as studentEntity2Dto } from '@service/student/mapper/student-mapper';
-import { Student } from '@processapi/types.gen';
-
-import { findStudentRepo, getStudentByIdRepo } from '@repo/student-repo';
-
-import { safeParseInt } from '@util/string-util';
 import { StudentNotFoundErrorDto } from '@api/shared/error-schema';
+import { GetStudentById200ResponseDto } from '@api/student/student-schema';
+import { Student } from '@processapi/types.gen';
+import { findStudentRepo, getStudentByIdRepo } from '@repo/student-repo';
+import { entity2Dto as studentEntity2Dto } from '@service/student/mapper/student-mapper';
+import { logger } from '@util/logging-util';
+import { safeParseInt } from '@util/string-util';
 
 export const getStudentByIdService = async (
   jwt: string,
@@ -59,7 +58,7 @@ const findStudentByClassIdStudentNumber = async (
     const studentNumber = safeParseInt(
       classIdStudentNumber.substring(2).split('-').pop() ?? ''
     );
-    console.log(`classId = ${classId}, studentNumber = ${studentNumber}`);
+    logger.info(`classId = ${classId}, studentNumber = ${studentNumber}`);
     const result = (
       await findStudentRepo(jwt, undefined, classId, undefined)
     ).filter((s) => s.studentNumber == studentNumber);

@@ -1,5 +1,5 @@
-import { ApprovalCommentType } from '@processapi/types.gen';
 import { ApprovalCommentTypeDto } from '@api/achievement/achievement-schema';
+import { ApprovalCommentType } from '@processapi/types.gen';
 
 export const entity2Dto = (
   src: ApprovalCommentType

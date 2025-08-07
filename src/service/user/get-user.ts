@@ -1,10 +1,8 @@
-import { GetUserById200ResponseDto } from '@api/user/user-schema';
-import { entity2Dto } from '@service/user/mapper/user-mapper';
-
-import { getCreatedUpdatedByService } from '@service/user/shared/enrich-user';
-
-import { findUserRepo } from '@repo/user-repo';
 import { UserNotFoundErrorDto } from '@api/shared/error-schema';
+import { GetUserById200ResponseDto } from '@api/user/user-schema';
+import { findUserRepo } from '@repo/user-repo';
+import { entity2Dto } from '@service/user/mapper/user-mapper';
+import { getCreatedUpdatedByService } from '@service/user/shared/enrich-user';
 
 export const getUserByIdService = async (
   jwt: string,

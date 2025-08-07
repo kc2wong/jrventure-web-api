@@ -11,7 +11,9 @@ class NotFoundErrorDto implements ErrorDto {
   constructor(message: string, parameter?: string[]) {
     this.code = 'NOT_FOUND';
     this.message = message;
-    if (parameter) this.parameter = parameter;
+    if (parameter) {
+      this.parameter = parameter;
+    }
   }
 }
 

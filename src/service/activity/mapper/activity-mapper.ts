@@ -1,14 +1,14 @@
-import {
-  entity2Dto as activityStatusEntity2Dto,
-  dto2Entity as activityStatusDto2Entity,
-} from '@service/activity/mapper/activity-status-mapper';
+import { ActivityDto, ActivityDetailDto, ActivityPayloadDto } from '@api/activity/activity-schema';
+import { SimpleUserDto } from '@api/user/user-schema';
+import { Activity, ActivityPayload } from '@processapi/types.gen';
 import {
   entity2Dto as achievementSubmissionRoleEntity2Dto,
   dto2Entity as achievementSubmissionRoleDto2Entity,
 } from '@service/activity/mapper/achievement-submission-role-mapper';
-import { ActivityDto, ActivityDetailDto, ActivityPayloadDto } from '@api/activity/activity-schema';
-import { Activity, ActivityPayload } from '@processapi/types.gen';
-import { SimpleUserDto } from '@api/user/user-schema';
+import {
+  entity2Dto as activityStatusEntity2Dto,
+  dto2Entity as activityStatusDto2Entity,
+} from '@service/activity/mapper/activity-status-mapper';
 
 export const entity2Dto = (src: Activity): ActivityDto => {
   const { status, achievementSubmissionRole, ...rest } = src;

@@ -2,6 +2,7 @@ import {
   CreateUserRequestDto,
   CreateUser201ResponseDto,
 } from '@api/user/user-schema';
+import { User } from '@processapi/types.gen';
 import { createUserRepo, updateUserRepo, findUserRepo } from '@repo/user-repo';
 import { entity2Dto } from '@service/user/mapper/user-mapper';
 import { dto2Entity as userRoleDto2Entity } from '@service/user/mapper/user-role-mapper';
@@ -10,7 +11,6 @@ import {
   getCreatedUpdatedByService,
   getEntitledStudentsService,
 } from '@service/user/shared/enrich-user';
-import { User } from '@processapi/types.gen';
 
 export const createUserService = async (
   jwt: string,

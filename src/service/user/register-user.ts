@@ -2,12 +2,12 @@ import {
   RegisterUserRequestDto,
   RegisterUser201ResponseDto,
 } from '@api/user/user-schema';
+import { registerUserRepo } from '@repo/user-registration-repo';
 import { entity2Dto } from '@service/user/mapper/user-mapper';
 import {
   getCreatedUpdatedByService,
   getEntitledStudentsService,
 } from '@service/user/shared/enrich-user';
-import { registerUserRepo } from '@repo/user-registration-repo';
 
 export const registerUserService = async (
   jwt: string,

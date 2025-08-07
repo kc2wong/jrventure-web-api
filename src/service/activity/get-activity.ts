@@ -1,9 +1,7 @@
-import { entity2DetailDto } from '@service/activity/mapper/activity-mapper';
-
-import { getCreatedUpdatedByService } from '@service/user/shared/enrich-user';
-
 import { ActivityDetailDto } from '@api/activity/activity-schema';
 import { getActivityByIdRepo } from '@repo/activity-repo';
+import { entity2DetailDto } from '@service/activity/mapper/activity-mapper';
+import { getCreatedUpdatedByService } from '@service/user/shared/enrich-user';
 
 export const getActivityByIdService = async (
   jwt: string,
