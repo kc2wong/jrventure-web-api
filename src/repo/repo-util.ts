@@ -1,3 +1,5 @@
+import { context, propagation } from '@opentelemetry/api';
+
 import { client } from '@processapi/client.gen';
 
 import { createSystemError } from './error-util';
@@ -12,11 +14,14 @@ export const callRepo = async <T>(
   ) => Promise<{ data?: T; error?: any; status?: number }>,
   authorizationToken?: string
 ): Promise<T> => {
-  const { data, error, status } = authorizationToken
-    ? await repoCall({
-        Authorization: `Bearer ${authorizationToken}`,
-      })
-    : await repoCall();
+  const headers: Record<string, string> = authorizationToken
+    ? { Authorization: `Bearer ${authorizationToken}` }
+    : {};
+
+  // Inject the current context into headers
+  propagation.inject(context.active(), headers);
+  const { data, error, status } = await repoCall(headers);
+
   if (error) {
     throw createSystemError(error, status);
   }

@@ -31,6 +31,8 @@ app.use(
     allowedHeaders: [
       'Content-Type',
       'Authorization',
+      'TraceParent',
+      'b3',
       'x-span-id',
       'x-trace-id',
     ],
