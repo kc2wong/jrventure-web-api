@@ -13,8 +13,10 @@ import activityCategoryRouter from '@api/activity-category/activity-category-rou
 import googleAuthenticationRouter from '@api/authentication/google-authentication-router';
 import userAuthenticationRouter from '@api/authentication/user-authentication-router';
 import mediaRouter from '@api/media/media-router';
+import circularRouter from '@api/circular/circular-router';
 import { errorHandler } from '@api/middleware/error-handler';
 import { jwtHandler } from '@api/middleware/jwt-handler';
+import classRouter from '@api/class/class-router';
 import studentRouter from '@api/student/student-router';
 import userMaintenanceRouter from '@api/user/user-router';
 import userRegistrationRouter from '@api/user-registration/user-registration-router';
@@ -47,10 +49,12 @@ app.use('/user-registrations', userRegistrationRouter);
 app.use('/user-authentications', userAuthenticationRouter);
 app.use('/google-authentications', googleAuthenticationRouter);
 app.use('/users', userMaintenanceRouter);
+app.use('/classes', classRouter);
 app.use('/students', studentRouter);
 app.use('/activity-categories', activityCategoryRouter);
 app.use('/activities', activityRouter);
 app.use('/achievements', achievementRouter);
+app.use('/circulars', circularRouter);
 app.use('/media', mediaRouter);
 app.use(errorHandler); // Global error handler
 

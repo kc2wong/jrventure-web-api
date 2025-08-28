@@ -1,9 +1,5 @@
 import { SimpleUserDto } from '@api/user/user-schema';
-import {
-  AuditControl,
-  Student,
-  User,
-} from '@processapi/types.gen';
+import { AuditControl, Student, User } from '@processapi/types.gen';
 import { findStudentRepo } from '@repo/student-repo';
 import { findUserRepo } from '@repo/user-repo';
 import { DefaultMap } from '@type/default-map';
@@ -32,20 +28,19 @@ export const getEntitledStudentsService = async (
 
 export const getCreatedUpdatedByService = async (
   authorizationToken: string,
-  auditControl: AuditControl[]
+  auditControl: AuditControl[],
+  additionalUserId?: string[]
 ): Promise<DefaultMap<SimpleUserDto>> => {
   const userIds = [
     ...new Set([
       ...auditControl.map((u) => u.createdBy),
       ...auditControl.map((u) => u.updatedBy),
+      ...(additionalUserId ?? []),
     ]),
   ];
-  const createdUpdatedBy = await findUserRepo(
-    authorizationToken,
-    {
-      id: userIds,
-    },
-  );
+  const createdUpdatedBy = await findUserRepo(authorizationToken, {
+    id: userIds,
+  });
   const userMap = new Map(
     createdUpdatedBy.map(({ id, name, email }) => [id, { id, name, email }])
   );
@@ -55,5 +50,8 @@ export const getCreatedUpdatedByService = async (
     }
   }
 
-  return new DefaultMap<SimpleUserDto>(() => unknownUser, Array.from(userMap.entries()));
+  return new DefaultMap<SimpleUserDto>(
+    () => unknownUser,
+    Array.from(userMap.entries())
+  );
 };

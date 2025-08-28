@@ -11,6 +11,8 @@ tags:
     description: User Authentication
   - name: Student
     description: Student and Class
+  - name: Circular
+    description: Circular maintenance and distribution
   - name: Activity
     description: Activity
   - name: Achievement
@@ -19,7 +21,7 @@ tags:
 servers:
   - url: http://localhost:4000
     description: Local development server
-  - url: https://sad6ntmjsh.execute-api.eu-west-2.amazonaws.com/prod
+  - url: https://qv5bdz5hh4.execute-api.eu-west-2.amazonaws.com/prod
     description: Demo server
 
 security:
@@ -323,6 +325,198 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /circulars:
+    get:
+      summary: Search circular by criteria
+      operationId: findCircular
+      tags:
+        - Circular
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/CircularStatus'
+        - in: query
+          name: title
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: forGrade
+          schema:
+            type: array
+            items:
+              type: number          
+        - in: query
+          name: dueAtFrom
+          schema:
+            type: string
+            format: datetime
+          required: false
+        - in: query
+          name: dueAtTo
+          schema:
+            type: string
+            format: datetime
+          required: false
+        - in: query
+          name: offset
+          schema:
+            type: number
+        - in: query
+          name: limit
+          schema:
+            type: number
+        - in: query
+          name: orderByField
+          schema:
+            $ref: '#/components/schemas/FindCircularOrderByField'
+        - in: query
+          name: orderByDirection
+          schema:
+            $ref: '#/components/schemas/OrderByDirection'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindCircularResult"
+        "400":
+          description: Validation fails
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a new circular
+      operationId: createCircular
+      tags:
+        - Circular
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CircularPayload'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Circular'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /circulars/{id}:
+    get:
+      summary: Get circular by id
+      operationId: getCircularById
+      tags:
+        - Circular
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: activity id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CircularDetail'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an existing circular
+      operationId: updateCircular
+      tags:
+        - Circular
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Circular ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/CircularPayload'
+                - type: object
+                  required:
+                    - version
+                  properties:
+                    version:
+                      type: number
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Circular'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'                
   /activities:
     get:
       summary: Search activities by criteria
@@ -802,57 +996,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'  
-    # put:
-    #   summary: Update an existing achievement approval
-    #   operationId: updateAchievementApproval
-    #   tags:
-    #     - Achievement
-    #   parameters:
-    #     - in: path
-    #       name: id
-    #       required: true
-    #       schema:
-    #         type: string
-    #       description: Achievement Id
-    #   requestBody:
-    #     required: true
-    #     content:
-    #       application/json:
-    #         schema:
-    #           type: object
-    #           allOf:
-    #             - $ref: '#/components/schemas/AchievementCreation'
-    #             - type: object
-    #               required:
-    #                 - version
-    #               properties:
-    #                 version:
-    #                   type: number
-    #   responses:
-    #     '200':
-    #       description: OK
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/AchievementApproval'
-    #     '400':
-    #       description: Validation error
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/Error'
-    #     '404':
-    #       description: Not found
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/Error'
-    #     '500':
-    #       description: Unexpected error
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/Error'
   /achievement-approvals/{id}/review:
     post:
       summary: Add a review to a pending achievement.  If type is Rejected, the approval record will be rejected also
@@ -1031,6 +1174,18 @@ components:
       enum:
       - Conversation
       - Rejection
+    CircularStatus:
+      type: string
+      enum:
+        - New
+        - Published
+        - Recalled
+    CircularDistributionStatus:
+      type: string
+      enum:
+        - Unread
+        - Read
+        - Signed
     AuditControl:
       type: object
       required:
@@ -1060,6 +1215,7 @@ components:
       type: object
       required:
         - offset
+        - limit
         - total
       properties:
         offset:
@@ -1208,6 +1364,133 @@ components:
         user:
           $ref: '#/components/schemas/User'
 
+    CircularAttachmentPayload:
+      type: object
+      required:
+        - fileName
+        - bucketName
+        - objectKey
+      properties:
+        fileName:
+          type: string
+          maxLength: 50
+        bucketName:
+          type: string
+          description: Optional bucket name, should provide a value if the file is a newly uploaded one
+          maxLength: 50
+        objectKey:
+          type: string
+          maxLength: 200
+    CircularAttachment:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CircularAttachmentPayload"
+        - type: object
+          required:
+            - fileSize
+            - getUrl
+            - type
+          properties:
+            fileSize:
+              type: integer
+            type:
+              type: string
+              maxLength: 50
+              description: Optional file type, e.g. image/png, application/pdf
+            getUrl:
+              type: string          
+    CircularBase:
+      type: object
+      required:
+        - title
+        - content
+        - forGrade
+        - status
+        - attachment
+      properties:
+        title:
+          type: object
+          additionalProperties:
+            type: string
+            description: Localized title mapped by Language enum
+        content:
+          type: object
+          additionalProperties:
+            type: string
+            description: Localized content mapped by Language enum
+        forGrade:
+          type: array
+          items:
+            type: number
+            format: int32
+        dueAt:
+          type: string
+          format: date-time
+    CircularPayload:
+      allOf:
+        - $ref: '#/components/schemas/CircularBase'
+        - type: object
+          required:
+            - attachment
+          properties:
+            forClass:
+              type: string
+              maxLength: 2
+              description: Grade with class number, e.g. 3A, 1B, 4C
+            attachment:
+              type: array
+              items:
+                $ref: '#/components/schemas/CircularAttachmentPayload'
+    Circular:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AuditControl'
+        - $ref: '#/components/schemas/CircularBase'
+        - type: object
+          required:
+            - id
+            - status
+          properties:
+            id:
+              type: string
+            status:
+              $ref: '#/components/schemas/CircularStatus'  
+            forClass:
+              $ref: '#/components/schemas/Class'
+            distributedBy:
+              type: string
+            distributedAt:
+              type: string
+              format: date-time
+    CircularDetail:
+      type: object
+      required:
+        - id
+        - status
+      allOf:
+        - $ref: '#/components/schemas/Circular'
+        - type: object
+          properties:
+            attachment:
+              type: array
+              items:
+                $ref: '#/components/schemas/CircularAttachment'
+    FindCircularOrderByField:
+      type: string
+      enum:
+        - Title
+    FindCircularResult:
+      type: object
+      allOf:
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Circular'
+        - $ref: '#/components/schemas/Pagination'
     ActivityCategory:
       type: object
       required:
